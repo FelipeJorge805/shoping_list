@@ -198,22 +198,15 @@ class HistoryPage extends StatelessWidget{
       );
     }
 
-    return Column(
-      children: [
-        for(var list in history)
-          ListTile(
-            title: Text("List ${history.indexOf(list) + 1}"),
-            subtitle: ListView(
-              children: [
-                for (var item in list)
-                  ListTile(
-                    leading: const Icon(Icons.history),
-                    title: Text(item.label),
-                  ),
-              ],
-            ),
-          ),
-      ],
+    return ListView.builder(
+      itemCount: history.length,
+      itemBuilder: (context, listIndex) {
+        var list = history[listIndex];
+        return ExpansionTile(
+          title: Text("List ${listIndex + 1}"),
+            children: list.toList(),
+        );
+      },
     );
   }
 }
