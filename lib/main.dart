@@ -192,6 +192,12 @@ class HistoryPage extends StatelessWidget{
   Widget build(BuildContext context) {
     var history = context.watch<MyAppState>().allLists;
 
+    if (history.isEmpty) {
+      return const Center(
+        child: Text('No history yet.'),
+      );
+    }
+
     return Column(
       children: [
         for(var list in history)
