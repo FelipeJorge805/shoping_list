@@ -35,7 +35,7 @@ class MyAppState extends ChangeNotifier {
   }
 
   void addCurrentListToHistory(){
-    allLists.add(shoppingList);
+    if(shoppingList.isNotEmpty) allLists.add(shoppingList);
     notifyListeners();
   }
 
@@ -142,8 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
           body: Row(
             children: [
               SafeArea(
-                child: NavigationRail(
-                  extended: constraints.maxWidth >= 600,
+                child: NavigationRail( //swap for NavBar
+                  //extended: constraints.maxWidth >= 600,
                   destinations: const [
                     NavigationRailDestination(
                       icon: Icon(Icons.format_list_numbered),
