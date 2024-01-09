@@ -139,38 +139,40 @@ class _MyHomePageState extends State<MyHomePage> {
               backgroundColor: theme.colorScheme.primary,
               child: const Icon(Icons.add),
             ) : null,
+          bottomNavigationBar: SafeArea(
+                  bottom: true,
+                  child: BottomNavigationBar(
+                    type: BottomNavigationBarType.fixed,
+                    //fixedColor: theme.colorScheme.primary,
+                    backgroundColor: theme.colorScheme.onPrimary, 
+                    items: const <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.format_list_numbered),
+                        label: 'Lists',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.favorite_border),
+                        label: 'Favorites',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.history),
+                        label: 'History',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.settings),
+                        label: 'Settings',
+                      ),
+                    ],
+                    currentIndex: selectedIndex,
+                    onTap: (value) {
+                      setState(() {
+                        selectedIndex = value;
+                      });
+                    },
+                  ),
+          ),
           body: Row(
             children: [
-              SafeArea(
-                child: NavigationRail( //swap for NavBar
-                  //extended: constraints.maxWidth >= 600,
-                  destinations: const [
-                    NavigationRailDestination(
-                      icon: Icon(Icons.format_list_numbered),
-                      label: Text('Lists'),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.favorite_border),
-                      label: Text('Favorites'),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.history),
-                      label: Text('History'),
-                    ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.settings),
-                      label: Text('Settings'),
-                    ),
-                  ],
-                  //trailing: IconButton(icon: const Icon(Icons.settings), onPressed: (){}, ),
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      selectedIndex = value;
-                    });
-                  },
-                ),
-              ),
               Expanded(
                 child: Container(
                   color: Theme.of(context).colorScheme.primaryContainer,
