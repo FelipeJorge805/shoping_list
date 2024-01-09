@@ -35,7 +35,7 @@ class MyAppState extends ChangeNotifier {
   }
 
   void addCurrentListToHistory(){
-    if(shoppingList.isNotEmpty) allLists.add(shoppingList);
+    if(shoppingList.isNotEmpty) allLists.add(Set.from(shoppingList));
     notifyListeners();
   }
 
