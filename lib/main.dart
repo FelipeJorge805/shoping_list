@@ -282,7 +282,9 @@ class ListPage extends StatelessWidget {
             color: Colors.red,
             child: const Icon(Icons.cancel),
           ),
-          onDismissed: (direction) => {appState.shoppingList.clear(),},
+          onDismissed: (direction) => {
+              appState.shoppingList.clear(),
+            },
           confirmDismiss:(direction) => showDialog<bool>(
             context: context,
             builder: (BuildContext context) {
