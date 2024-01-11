@@ -35,6 +35,18 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateName(oldName, newName){
+    bool changed = false;
+    for (var item in shoppingList) {
+      if(item.label == oldName){
+        item.label = newName;
+        changed = true;
+        break;
+      }
+    }
+    if(changed) notifyListeners();
+  }
+
   void addItemToList(){
     shoppingList.add(lastCreated!);
     notifyListeners();
