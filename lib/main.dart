@@ -231,7 +231,7 @@ class FavoritesPage extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     var appState = context.watch<MyAppState>();
-    var list = appState.shoppingList;
+    var list = appState.favoritesList;
 
     if (list.isEmpty) {
       return const Center(
