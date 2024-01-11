@@ -115,7 +115,14 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: theme.colorScheme.primary,
           ),
           floatingActionButton: selectedIndex == 0 ? FloatingActionButton(
-              onPressed: () => showDialog<void>(
+              onPressed: () => {
+                //create new ListItem
+                //ListItem(label: "New Item"),
+                appState.lastCreated = ListItem(label: ""),
+                appState.addItemToList(),
+              },
+              
+              /*showDialog<void>(
                 //anchorPoint: Offset(dx, dy),
                 context: context,
                 builder: (BuildContext context) {
@@ -135,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 }
-              ),
+              ),*/
               backgroundColor: theme.colorScheme.primary,
               child: const Icon(Icons.add),
             ) : null,
