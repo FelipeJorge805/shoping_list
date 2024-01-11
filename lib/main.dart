@@ -58,12 +58,29 @@ class _ListItemState extends State<ListItem> {
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
     
+
+    var textController = TextEditingController();
+    //textController.clear();
+    //textController.selection = TextSelection.fromPosition(TextPosition(offset: textController.value.text.length));
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
       value: _value, 
       onChanged: (newValue) => setState(() => _value = newValue),
-      title: TextField(controller: TextEditingController()..text = widget.label, onChanged: (text) => {},)
+      title: TextField(
+        //autofocus: _focus,
+        controller: textController..text = widget.label, 
+        onSubmitted: (newName) => {
+          //if(newName == "") newName = "New Item",
+          appState.updateName(widget.label, newName),
+          widget.label = newName,
+        },
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Item',
+        ),
+      )
     );
   }
 }
