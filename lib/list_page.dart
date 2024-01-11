@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoping_list/main.dart';
+import 'list_item.dart';
 
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
