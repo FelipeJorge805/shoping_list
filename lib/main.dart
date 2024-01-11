@@ -28,6 +28,12 @@ class MyAppState extends ChangeNotifier {
   ListItem? lastCreated;
   Set<ListItem> shoppingList = {};
   List<Set<ListItem>> allLists = [];
+  List<ListItem> favoritesList = [];
+
+  void addFavoriteItem(var item){
+    favoritesList.add(item);
+    notifyListeners();
+  }
 
   void addItemToList(){
     shoppingList.add(lastCreated!);
