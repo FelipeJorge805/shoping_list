@@ -319,11 +319,14 @@ class ListPage extends StatelessWidget {
           for (var item in appState.shoppingList) 
             Dismissible(
               key: UniqueKey(),
-              onDismissed:(direction) => {appState.removeItem(item.label),},
+              onDismissed:(direction) => {
+                if(direction == DismissDirection.startToEnd) appState.addFavoriteItem(item),
+                if(direction == DismissDirection.endToStart) appState.removeItem(item.label),
+                },
               background: Container(
                 alignment: AlignmentDirectional.centerStart,
-                color: Colors.red,
-                child: const Icon(Icons.cancel),
+                color: Colors.green,
+                child: const Icon(Icons.favorite_border),
                 ),
               secondaryBackground: Container(
                 alignment: AlignmentDirectional.centerEnd,
