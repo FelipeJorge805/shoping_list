@@ -46,9 +46,8 @@ class MyAppState extends ChangeNotifier {
 }
 
 class ListItem extends StatefulWidget{
-  final String label;
-
-  const ListItem({Key? key, required this.label}) : super(key: key);
+  String label;
+  ListItem({Key? key, required this.label}) : super(key: key);
 
   @override
   State<ListItem> createState() => _ListItemState();
