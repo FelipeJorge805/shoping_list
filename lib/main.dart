@@ -232,9 +232,44 @@ class _HistoryPageState extends State<HistoryPage> {
       itemCount: history.length,
       itemBuilder: (context, listIndex) {
         var list = history[listIndex];
-        return ExpansionTile(
-          title: Text("List ${listIndex + 1}"),
-            children: list.toList(),
+        return Dismissible(
+          key: UniqueKey(),
+          background: Container(
+            alignment: AlignmentDirectional.centerEnd,
+            color: Colors.red,
+            child: const Icon(Icons.cancel),
+          ),
+          secondaryBackground: Container(
+            alignment: AlignmentDirectional.centerEnd,
+            color: Colors.red,
+            child: const Icon(Icons.cancel),
+          ),
+          onDismissed: (direction) => {
+            history.removeAt(listIndex),
+          },
+          confirmDismiss: (direction) => showDialog<bool>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Delete list?"),
+                content: const Text("Are you sure you want to delete this list? This action cannot be undone."),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("Delete"),
+                  ),
+                ],
+              );
+            },
+          ),
+          child: ExpansionTile(
+            title: Text("List ${listIndex + 1}"),
+              children: list.toList(),
+          ),
         );
       },
     );
