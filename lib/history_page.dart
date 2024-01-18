@@ -63,7 +63,10 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
           child: ExpansionTile(
             title: Text("List ${listIndex + 1}"),
-              children: list.toList(),
+              children: [
+                for (var item in list)
+                  ListItem(label: item.label, checked: item.checked)
+                ],
           ),
         );
       },
