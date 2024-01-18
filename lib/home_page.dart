@@ -105,36 +105,36 @@ class _HomePageState extends State<HomePage> {
             child: const Icon(Icons.add),
           ) : null,
           bottomNavigationBar: SafeArea(
-                  bottom: true,
-                  child: BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    //fixedColor: theme.colorScheme.primary,
-                    backgroundColor: theme.colorScheme.onPrimary, 
-                    items: const <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.format_list_numbered),
-                        label: 'Lists',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.favorite_border),
-                        label: 'Favorites',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.history),
-                        label: 'History',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
-                        label: 'Settings',
-                      ),
-                    ],
-                    currentIndex: selectedIndex,
-                    onTap: (value) {
-                      setState(() {
-                        selectedIndex = value;
-                      });
-                    },
-                  ),
+            bottom: true,
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              //fixedColor: theme.colorScheme.primary,
+              backgroundColor: theme.colorScheme.onPrimary, 
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.format_list_numbered),
+                  label: 'Lists',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite_border),
+                  label: 'Favorites',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.history),
+                  label: 'History',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: 'Settings',
+                ),
+              ],
+              currentIndex: selectedIndex,
+              onTap: (value) {
+                setState(() {
+                  selectedIndex = value;
+                });
+              },
+            ),
           ),
           body: Row(
             children: [
