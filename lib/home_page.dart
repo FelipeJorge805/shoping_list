@@ -65,7 +65,6 @@ class _HomePageState extends State<HomePage> {
           page = const Placeholder();
         default:
             throw UnimplementedError('No widget for $selectedIndex');
-
       }
 
     return LayoutBuilder(
@@ -77,37 +76,34 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: theme.colorScheme.primary,
           ),
           floatingActionButton: selectedIndex == 0 ? FloatingActionButton(
-              onPressed: () => {
-                //create new ListItem
-                //ListItem(label: "New Item"),
-                appState.lastCreated = ListItem(label: ""),
-                appState.addItemToList(),
-              },
-              
-              /*showDialog<void>(
-                //anchorPoint: Offset(dx, dy),
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    child: TextField(
-                      autofocus: true,
-                      autocorrect: true,
-                      enableSuggestions: true,
-                      decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'New Item'),
-                      onSubmitted: (String value) => {
-                        if(value != ""){
-                          appState.lastCreated = ListItem(label: value), 
-                          appState.addItemToList(),
-                        },
-                        Navigator.pop(context)
+            onPressed: () => {
+              appState.lastCreated = ListItem(key: const Key('Item'),label: "", checked: false),
+              appState.addItemToList(),
+            },
+            /*showDialog<void>(
+              //anchorPoint: Offset(dx, dy),
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  child: TextField(
+                    autofocus: true,
+                    autocorrect: true,
+                    enableSuggestions: true,
+                    decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'New Item'),
+                    onSubmitted: (String value) => {
+                      if(value != ""){
+                        appState.lastCreated = ListItem(label: value), 
+                        appState.addItemToList(),
                       },
-                    ),
-                  );
-                }
-              ),*/
-              backgroundColor: theme.colorScheme.primary,
-              child: const Icon(Icons.add),
-            ) : null,
+                      Navigator.pop(context)
+                    },
+                  ),
+                );
+              }
+            ),*/
+            backgroundColor: theme.colorScheme.primary,
+            child: const Icon(Icons.add),
+          ) : null,
           bottomNavigationBar: SafeArea(
                   bottom: true,
                   child: BottomNavigationBar(
