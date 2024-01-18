@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoping_list/file_storage.dart';
+import 'package:shoping_list/list_item.dart';
 import 'package:shoping_list/main.dart';
 
 class HistoryPage extends StatefulWidget{
@@ -38,6 +40,7 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
           onDismissed: (direction) => {
             history.removeAt(listIndex),
+            FileStorage().saveDataToFile('history.txt', history.map((e) => e.map((e) => e.toString()).join(",")).join("\n")),
           },
           confirmDismiss: (direction) => showDialog<bool>(
             context: context,
