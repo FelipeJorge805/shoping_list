@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoping_list/file_storage.dart';
 import 'package:shoping_list/main.dart';
 import 'list_item.dart';
 
@@ -30,6 +31,7 @@ class ListPage extends StatelessWidget {
           ),
           onDismissed: (direction) => {
               appState.shoppingList.clear(),
+              FileStorage().saveDataToFile('current.txt', ''),
             },
           confirmDismiss:(direction) => showDialog<bool>(
             context: context,
@@ -54,6 +56,8 @@ class ListPage extends StatelessWidget {
             onPressed: () => {
               appState.addCurrentListToHistory(),
               appState.shoppingList.clear(),
+              FileStorage().saveDataToFile('current.txt', ''),
+              FileStorage().saveDataToFile('history.txt', appState.allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n")),
             },
             label: const Text('Current list'),
             icon: //save icon
