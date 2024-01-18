@@ -29,7 +29,7 @@ class ListPage extends StatelessWidget {
             color: Colors.red,
             child: const Icon(Icons.cancel),
           ),
-          onDismissed: (direction) => {
+          onDismissed: (direction) => {     //clear current list button
               appState.shoppingList.clear(),
               FileStorage().saveDataToFile('current.txt', ''),
             },
@@ -53,7 +53,7 @@ class ListPage extends StatelessWidget {
             },
           ),
           child: TextButton.icon(
-            onPressed: () => {
+            onPressed: () => {  //save current list button
               appState.addCurrentListToHistory(),
               appState.shoppingList.clear(),
               FileStorage().saveDataToFile('current.txt', ''),
