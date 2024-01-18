@@ -66,8 +66,14 @@ class ListPage extends StatelessWidget {
             Dismissible(
               key: UniqueKey(),
               onDismissed:(direction) => {
-                if(direction == DismissDirection.startToEnd) appState.addFavoriteItem(item),
-                if(direction == DismissDirection.endToStart) appState.removeItem(item.label),
+                if(direction == DismissDirection.startToEnd) {  //favorite item
+                  appState.addFavoriteItem(item),
+                  FileStorage().saveDataToFile('favorites.txt', appState.favoritesList.map((e) => e.label).join("\n")),
+                },
+                if(direction == DismissDirection.endToStart) {  //delete item
+                  appState.removeItem(item.label),
+                  FileStorage().saveDataToFile('current.txt', appState.shoppingList.map((e) => e.toString()).join("\n")),
+                  }
                 },
               background: Container(
                 alignment: AlignmentDirectional.centerStart,
