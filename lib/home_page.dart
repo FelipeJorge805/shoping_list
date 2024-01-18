@@ -21,6 +21,30 @@ class _HomePageState extends State<HomePage> {
   var selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    widget.storage.readFile('favorites.txt').then((String value) {
+      if(value == "") return;
+      setState(() {
+        context.read<MyAppState>().favoritesList = List.of(value.split("\n").map((e) => ListItem(label: e, checked: false)));
+      });
+    });
+    widget.storage.readFile('current.txt').then((String value) {
+      if(value == "") return;
+      setState(() {
+        context.read<MyAppState>().shoppingList = Set.of(value.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")));
+      });
+    });
+    widget.storage.readFile('history.txt').then((String value) {
+      if(value == "") return;
+      setState(() {
+        context.read<MyAppState>().allLists = List.of(value.split("\n").map((e) => Set.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
+        //context.read<MyAppState>().allLists = jsonDecode(value);
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final style = theme.textTheme.displayMedium!.copyWith(
