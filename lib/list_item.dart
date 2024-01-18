@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoping_list/file_storage.dart';
 import 'package:shoping_list/main.dart';
 
 class ListItem extends StatefulWidget{
@@ -29,14 +30,20 @@ class _ListItemState extends State<ListItem> {
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
       value: _value, 
-      onChanged: (newValue) => setState(() => _value = newValue),
+      onChanged: (newValue) => setState(() => {
+          _value = newValue,
+          widget.checked = newValue!,
+          appState.changeCheckState(widget.label, newValue),
+          FileStorage().saveDataToFile('current.txt', appState.shoppingList.map((e) => e.toString()).join("\n")),
+        }
+      ),
       title: TextField(
         //autofocus: _focus,
         controller: textController..text = widget.label, 
         onSubmitted: (newName) => {
-          //if(newName == "") newName = "New Item",
           appState.updateName(widget.label, newName),
           widget.label = newName,
+          FileStorage().saveDataToFile('current.txt', appState.shoppingList.map((e) => e.toString()).join("\n")),
         },
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
