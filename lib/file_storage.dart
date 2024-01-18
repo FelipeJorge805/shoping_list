@@ -12,7 +12,7 @@ class FileStorage{
   Future<File> getLocalFile(String filename) async {
     // Get the local path using the _localPath method.
     final path = await _localPath;
-    return File('$path/$filename');
+    return File('$path/$filename').create();
   }
 
   Future<File> saveDataToFile(String fileName, var data) async {
