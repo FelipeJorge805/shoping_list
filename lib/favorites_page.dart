@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoping_list/list_item.dart';
 import 'package:shoping_list/main.dart';
 
 class FavoritesPage extends StatelessWidget{
@@ -8,7 +9,7 @@ class FavoritesPage extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     var appState = context.watch<MyAppState>();
-    var list = appState.favoritesList;
+    List<ListItem> list = appState.favoritesList;
 
     if (list.isEmpty) {
       return const Center(
@@ -21,15 +22,25 @@ class FavoritesPage extends StatelessWidget{
     return ListTile(
       //onTap: () => TextField(onSubmitted: (value) => {},),
       title: const Text("Favorite items"),
-      subtitle: ListView(
-        children: [
-          for (var item in list)
-            ListTile(
-              leading: const Icon(Icons.favorite),
-              title: Text(item.label),
+      subtitle: AnimatedList(
+        initialItemCount: list.length,
+        itemBuilder: (context, index, animation) {
+          print("index: $index");
+          ListItem item = list[index];
+          return SizeTransition(
+            sizeFactor: animation,
+            child: TextButton.icon(
+              onPressed: () {
+                appState.toggleFavorites(item);
+              },
+              icon: appState.favoritesList.contains(item)
+                  ? const Icon(Icons.favorite)
+                  : const Icon(Icons.favorite_border),
+              label: Text(item.label),
             ),
-          ],
-      )
+          );
+        },
+      ),
     );
   }
 }
