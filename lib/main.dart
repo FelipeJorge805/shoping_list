@@ -11,7 +11,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  ListItem? lastCreated;
   Set<ListItem> shoppingList = {};
   List<Set<ListItem>> allLists = [];
   List<ListItem> favoritesList = [];
+  ListItem? lastCreated;
 
   void addFavoriteItem(var item){
     favoritesList.add(item);
@@ -76,4 +76,12 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void toggleFavorites(var item) {
+    if(favoritesList.contains(item)){
+      favoritesList.remove(item);
+    }else {
+      favoritesList.add(item);
+    }
+    notifyListeners();
+  }
 }
