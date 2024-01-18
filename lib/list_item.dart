@@ -5,7 +5,8 @@ import 'package:shoping_list/main.dart';
 
 class ListItem extends StatefulWidget{
   String label;
-  ListItem({Key? key, required this.label}) : super(key: key);
+  bool checked = false;
+  ListItem({Key? key, required this.label, required this.checked}) : super(key: key);
 
   @override
   State<ListItem> createState() => _ListItemState();
@@ -17,7 +18,13 @@ class ListItem extends StatefulWidget{
 }
 
 class _ListItemState extends State<ListItem> {
-  bool? _value = false;
+  bool? _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.checked;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class _ListItemState extends State<ListItem> {
     //textController.selection = TextSelection.fromPosition(TextPosition(offset: textController.value.text.length));
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
-      value: _value, 
+      value: _value,
       onChanged: (newValue) => setState(() => {
           _value = newValue,
           widget.checked = newValue!,
