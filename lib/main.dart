@@ -65,4 +65,15 @@ class MyAppState extends ChangeNotifier {
     shoppingList.removeWhere((item) => item.label == value);
     notifyListeners();
   }
+
+  changeCheckState(String label, bool newValue) {
+    for (var item in shoppingList) {
+      if(item.label == label){
+        item.checked = newValue;
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
 }
