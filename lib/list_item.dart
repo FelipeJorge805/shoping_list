@@ -8,6 +8,11 @@ class ListItem extends StatefulWidget{
 
   @override
   State<ListItem> createState() => _ListItemState();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return "$label-$checked";
+  }
 }
 
 class _ListItemState extends State<ListItem> {
@@ -39,5 +44,10 @@ class _ListItemState extends State<ListItem> {
         ),
       )
     );
+  }
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return _value.toString();
   }
 }
