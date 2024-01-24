@@ -50,8 +50,11 @@ class _HomePageState extends State<HomePage> {
           ),
           floatingActionButton: selectedIndex == 0 ? FloatingActionButton(
             onPressed: () => {
-              appState.lastCreated = ListItem(key: const Key('Item'),label: "", checked: false),
-              appState.addItemToList(),
+              if(appState.selectedItems.isNotEmpty) appState.addAllSelected()
+              else{
+                appState.lastCreated = ListItem(key: const Key('Item'),label: "", checked: false),
+                appState.addItemToList(),
+              }
             },
             /*showDialog<void>(
               //anchorPoint: Offset(dx, dy),
