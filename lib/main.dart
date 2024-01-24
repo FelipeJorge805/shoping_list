@@ -78,7 +78,6 @@ class MyAppState extends ChangeNotifier {
   }
 
   void updateName(oldName, newName){
-    bool changed = false;
     for (var item in shoppingList) {
       if(item.label == oldName){
         item.label = newName;
@@ -87,7 +86,6 @@ class MyAppState extends ChangeNotifier {
         break;
       }
     }
-    if(changed) notifyListeners();
   }
 
   void addItemToList(){
