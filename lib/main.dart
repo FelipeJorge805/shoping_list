@@ -162,6 +162,12 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addAllToCurrent(Set<ListItem> list, {required bool overwrite}) {
+    if(overwrite) {
+      shoppingList.clear();
+    }
+    shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false)));
+    FileStorage().saveDataToFile('current_list.txt', shoppingList.map((e) => e.toString()).join("\n"));
     notifyListeners();
   }
 }
