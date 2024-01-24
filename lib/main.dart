@@ -68,6 +68,7 @@ class MyAppState extends ChangeNotifier {
   Set<ListItem> shoppingList = {};
   List<Set<ListItem>> allLists = [];
   List<String> favoritesList = [];
+  Map<String,int> commonItems = {};
   ListItem? lastCreated;
 
   void addFavoriteItem(var item){
@@ -98,8 +99,21 @@ class MyAppState extends ChangeNotifier {
   void addCurrentListToHistory(){
     if(shoppingList.isNotEmpty) {
       allLists.add(Set.from(shoppingList));
+      calculateCommonItems();
       FileStorage().saveDataToFile('history.txt', allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
       notifyListeners();
+    }
+  }
+
+  void calculateCommonItems() {
+    commonItems.clear();
+    if(allLists.length > 1) {
+      for (var list in allLists) {
+        for (var item in list) {
+          commonItems.update(item.label.toLowerCase(), (value) => value + 1, ifAbsent: () => 1);
+        }
+      }
+      commonItems = Map.fromEntries(commonItems.entries.toList()..sort((a, b) => b.value.compareTo(a.value)));
     }
   }
 
