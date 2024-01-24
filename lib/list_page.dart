@@ -10,6 +10,75 @@ class ListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
+    if (appState.shoppingList.isEmpty && appState.favoritesList.isEmpty) {
+      return const Center(
+        child: Text('No items yet.'),
+      );
+    }
+
+    if (appState.shoppingList.isEmpty && appState.favoritesList.isNotEmpty) {
+      return Column(
+        //mainAxisSize: MainAxisSize.min,
+        children: [
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(child: Center(child: Text("Favorites", style: TextStyle(fontSize: 16)))),
+              Expanded(child: Center(child: Text('Your most common items', style: TextStyle(fontSize: 16),))),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            width: double.infinity,
+            child: Row(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10), //gets the container away from the edge
+                  //alignment: Alignment.topLeft,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.4, 
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListView.builder(
+                    //shrinkWrap: true,
+                    padding: const EdgeInsets.all(4),
+                    itemCount: appState.favoritesList.length,
+                    itemBuilder: (context, index) {
+                      return FavoriteListItem(name: appState.favoritesList[index], key: ValueKey(index));
+                    }
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    //shrinkWrap: true,
+                    itemCount: appState.favoritesList.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(appState.favoritesList[index]),
+                        leading: const Icon(Icons.favorite),
+                        onTap: () {
+                          //add to selected list and grey out
+                            
+                        }
+                      );
+                    }
+                  ),
+                ),
+                //Text('Add some items to your list by tapping the + button below.'),
+              ],
+            ),
+          ),
+          const Spacer(),
+          const Text('Add some items to your list by tapping the + button.'	),
+        ],
+      );
+    }
+
     return ListTile(
       /*leading: //save button
         IconButton(
