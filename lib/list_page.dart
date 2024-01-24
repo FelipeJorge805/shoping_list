@@ -84,9 +84,9 @@ class ListPage extends StatelessWidget {
                 child: const Icon(Icons.cancel),
                 ),
               movementDuration: const Duration(milliseconds: 100),
-              resizeDuration: const Duration(milliseconds: 150),
+              resizeDuration: null,
               child: ListItem(label: item.label, checked: item.checked,)
-              )
+            )
         ],
       ),
     );
