@@ -61,6 +61,38 @@ class _HistoryPageState extends State<HistoryPage> {
               );
             },
           ),
+          child: GestureDetector(
+            onLongPress: () {
+              showDialog<bool>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("Make this list your current list?"),
+                    content: const Text("Are you sure you want to make this list your current list?"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          appState.addAllToCurrent(list, overwrite: false);
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text("Add"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          appState.addAllToCurrent(list, overwrite: true);
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text("Overwrite"),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
             child: ExpansionTile(
               tilePadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
               subtitle: Text("${list.where((element) => element.checked).length}/${list.length}"),
