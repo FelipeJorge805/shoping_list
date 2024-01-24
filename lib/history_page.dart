@@ -29,7 +29,7 @@ class _HistoryPageState extends State<HistoryPage> {
         return Dismissible(
           key: UniqueKey(),
           background: Container(
-            alignment: AlignmentDirectional.centerEnd,
+            alignment: AlignmentDirectional.centerStart,
             color: Colors.red,
             child: const Icon(Icons.cancel),
           ),
