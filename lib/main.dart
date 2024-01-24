@@ -13,16 +13,51 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  FileStorage storage = FileStorage();
+  MyAppState appState = MyAppState();
+
+  Future<void> loadFiles() async {
+    String favoritesValue = await storage.readFile('favorites.txt');
+    if(favoritesValue != "") {
+      appState.favoritesList = List.of(favoritesValue.split("\n"));
+    }
+    String currentValue = await storage.readFile('current.txt');
+    if(currentValue != "") {
+      appState.shoppingList = Set.of(currentValue.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")));
+    }
+    //context.read<MyAppState>().allLists = jsonDecode(value);
+    String historyValue = await storage.readFile('history.txt');
+    if(historyValue != "") {
+      appState.allLists = List.of(historyValue.split("\n").map((e) => Set.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
+    }
+  }
+  
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+      create: (context) => appState,
       child: MaterialApp(
         title: 'List',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow.shade500),
         ),
-        home: HomePage(storage: FileStorage()),
+        home: FutureBuilder(
+          future: loadFiles(),
+          builder:(context, snapshot) {
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return const Center(child: CircularProgressIndicator());
+            }else if(snapshot.hasError){
+              return const Center(child: Text("Error"));
+            }else{
+              return const HomePage();
+            }
+          },
+        )
       ),
     );
   }
