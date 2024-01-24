@@ -151,6 +151,12 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearShoppingList() {
+    shoppingList.clear();
+    FileStorage().saveDataToFile('current.txt', '');
+    notifyListeners();
+  }
+
     notifyListeners();
   }
 }
