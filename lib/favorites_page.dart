@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shoping_list/list_item.dart';
 import 'package:shoping_list/main.dart';
 
 class FavoritesPage extends StatelessWidget{
@@ -9,7 +8,7 @@ class FavoritesPage extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     var appState = context.watch<MyAppState>();
-    List<ListItem> list = appState.favoritesList;
+    List<String> list = appState.favoritesList;
 
     if (list.isEmpty) {
       return const Center(
@@ -19,28 +18,40 @@ class FavoritesPage extends StatelessWidget{
 
     //var title = TextField(controller: TextEditingController()..text = "Favorite items");
 
-    return ListTile(
-      //onTap: () => TextField(onSubmitted: (value) => {},),
-      title: const Text("Favorite items"),
-      subtitle: AnimatedList(
-        initialItemCount: list.length,
-        itemBuilder: (context, index, animation) {
-          print("index: $index");
-          ListItem item = list[index];
-          return SizeTransition(
-            sizeFactor: animation,
-            child: TextButton.icon(
-              onPressed: () {
-                appState.toggleFavorites(item);
-              },
-              icon: appState.favoritesList.contains(item)
-                  ? const Icon(Icons.favorite)
-                  : const Icon(Icons.favorite_border),
-              label: Text(item.label),
-            ),
-          );
-        },
-      ),
+    return ReorderableListView(
+      proxyDecorator: (child, index, animation) {
+        return Material(
+          color: Theme.of(context).primaryColor.withOpacity(0.6),
+          elevation: 5,
+          shadowColor: Colors.black.withOpacity(0.4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: child
+        );
+      },
+      padding: const EdgeInsets.all(8),
+      header: const Text("Favorite items", style: TextStyle(fontSize: 18)),
+      children: list.map((item) {
+        return ListTile(
+          key: Key(item),
+          title: Text(item),
+          leading: IconButton(
+            icon: appState.favoritesList.contains(item)
+                ? const Icon(Icons.favorite)
+                : const Icon(Icons.favorite_border),
+            onPressed: () {
+              appState.toggleFavorites(item);
+            },
+          ),
+        );
+      }).toList(),
+      onReorder: (oldIndex, newIndex) {
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        appState.reorderFavorites(oldIndex, newIndex);
+      },
     );
   }
 }
