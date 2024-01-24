@@ -57,7 +57,15 @@ class ListPage extends StatelessWidget {
                     }
                   ),
                 ),
-                Expanded(
+                Container(
+                  margin: const EdgeInsets.all(10), //gets the container away from the edge
+                  //alignment: Alignment.topLeft,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.4, 
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: ListView.builder(
                     //shrinkWrap: true,
                     itemCount: appState.favoritesList.length,
