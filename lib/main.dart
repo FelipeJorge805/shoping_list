@@ -157,6 +157,11 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeList() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
+    FileStorage().saveDataToFile('history.txt', allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
+    notifyListeners();
+  }
+
     notifyListeners();
   }
 }
