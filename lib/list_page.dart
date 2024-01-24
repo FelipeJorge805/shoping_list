@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shoping_list/file_storage.dart';
 import 'package:shoping_list/main.dart';
 import 'list_item.dart';
 
@@ -54,29 +53,25 @@ class ListPage extends StatelessWidget {
           ),
           child: TextButton.icon(
             onPressed: () => {  //save current list button
-              appState.addCurrentListToHistory(),
-              appState.shoppingList.clear(),
-              FileStorage().saveDataToFile('current.txt', ''),
-              FileStorage().saveDataToFile('history.txt', appState.allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n")),
-            },
-            label: const Text('Current list'),
-            icon: //save icon
-              const Icon(Icons.save_alt),
-          )
-        ),
-        subtitle: ListView(
+            appState.clearShoppingList(),
+            appState.addCurrentListToHistory(),
+          },
+          label: const Text('Current list'),
+          icon: //save icon
+            const Icon(Icons.save_alt),
+        )
+      ),
+      subtitle: ListView(
         children: [
           for (var item in appState.shoppingList) 
             Dismissible(
               key: UniqueKey(),
               onDismissed:(direction) => {
                 if(direction == DismissDirection.startToEnd) {  //favorite item
-                  appState.addFavoriteItem(item),
-                  FileStorage().saveDataToFile('favorites.txt', appState.favoritesList.map((e) => e.label).join("\n")),
+                  appState.addFavoriteItem(item.label),
                 },
                 if(direction == DismissDirection.endToStart) {  //delete item
                   appState.removeItem(item.label),
-                  FileStorage().saveDataToFile('current.txt', appState.shoppingList.map((e) => e.toString()).join("\n")),
                   }
                 },
               background: Container(
