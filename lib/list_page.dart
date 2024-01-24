@@ -20,11 +20,15 @@ class ListPage extends StatelessWidget {
       return Column(
         //mainAxisSize: MainAxisSize.min,
         children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(textAlign: TextAlign.center, "Select items from your favorites list and your most common items to add to your current list."),
+          ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(child: Center(child: Text("Favorites", style: TextStyle(fontSize: 16)))),
-              Expanded(child: Center(child: Text('Your most common items', style: TextStyle(fontSize: 16),))),
+              Expanded(child: Align(child: Text("Favorites", style: TextStyle(fontSize: 16)))),
+              Expanded(child: Align(child: Text('Your most common items', style: TextStyle(fontSize: 16),))),
             ],
           ),
           SizedBox(
