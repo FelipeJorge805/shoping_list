@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shoping_list/file_storage.dart';
 import 'package:shoping_list/list_item.dart';
 import 'package:shoping_list/main.dart';
 
@@ -14,7 +13,8 @@ class HistoryPage extends StatefulWidget{
 class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
-    var history = context.watch<MyAppState>().allLists;
+    var appState = context.watch<MyAppState>();
+    var history = appState.allLists;
 
     if (history.isEmpty) {
       return const Center(
@@ -39,8 +39,8 @@ class _HistoryPageState extends State<HistoryPage> {
             child: const Icon(Icons.cancel),
           ),
           onDismissed: (direction) => {
-            history.removeAt(listIndex),
-            FileStorage().saveDataToFile('history.txt', history.map((e) => e.map((e) => e.toString()).join(",")).join("\n")),
+            history.removeAt(listIndex), //shallow copy so List at listIndex gets removed in appState.allLists as well
+            appState.removeList(),
           },
           confirmDismiss: (direction) => showDialog<bool>(
             context: context,
