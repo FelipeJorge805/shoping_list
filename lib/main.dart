@@ -136,6 +136,21 @@ class MyAppState extends ChangeNotifier {
     FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
     notifyListeners();
   }
+
+  void addSelectedItem(String favoritesList) {
+    selectedItems.add(favoritesList);
+    notifyListeners();
+  }
+
+  void addAllSelected() {
+    for (var item in selectedItems) {
+      shoppingList.add(ListItem(label: item, checked: false));
+    }
+    selectedItems.clear();
+    FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
+    notifyListeners();
+  }
+
     notifyListeners();
   }
 }
