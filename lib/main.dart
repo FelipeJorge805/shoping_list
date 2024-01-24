@@ -117,7 +117,6 @@ class MyAppState extends ChangeNotifier {
         break;
       }
     }
-    notifyListeners();
   }
 
   void toggleFavorites(var item) {
