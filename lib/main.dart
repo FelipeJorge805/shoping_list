@@ -142,6 +142,11 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeSelectedItem(String name) {
+    selectedItems.remove(name);
+    notifyListeners();
+  }
+
   void addAllSelected() {
     for (var item in selectedItems) {
       shoppingList.add(ListItem(label: item, checked: false));
