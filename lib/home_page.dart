@@ -48,38 +48,44 @@ class _HomePageState extends State<HomePage> {
             //leading: const Icon(Icons.menu),
             backgroundColor: theme.colorScheme.primary,
           ),
-          floatingActionButton: selectedIndex == 0 ? FloatingActionButton(
-            onPressed: () => {
-              if(appState.selectedItems.isNotEmpty) appState.addAllSelected()
-              else{
-                appState.lastCreated = ListItem(key: const Key('Item'),label: "", checked: false),
-                appState.addItemToList(),
-              }
-            },
-            /*showDialog<void>(
-              //anchorPoint: Offset(dx, dy),
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                  child: TextField(
-                    autofocus: true,
-                    autocorrect: true,
-                    enableSuggestions: true,
-                    decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'New Item'),
-                    onSubmitted: (String value) => {
-                      if(value != ""){
-                        appState.lastCreated = ListItem(label: value), 
-                        appState.addItemToList(),
-                      },
-                      Navigator.pop(context)
-                    },
-                  ),
-                );
-              }
-            ),*/
-            backgroundColor: theme.colorScheme.primary,
-            child: const Icon(Icons.add),
-          ) : null,
+          floatingActionButton: selectedIndex != 0 ? null : 
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              verticalDirection: VerticalDirection.up,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                const SizedBox(width: 10,),
+                FloatingActionButton(   //clear list button
+                  onPressed: () => {
+                    appState.clearShoppingList(),
+                  },
+                  backgroundColor: theme.colorScheme.primary,
+                  child: const Icon(Icons.delete),
+                ),
+                const SizedBox(width: 10,),
+                FloatingActionButton(   //save list button
+                  onPressed: () => {
+                    appState.addCurrentListToHistory(),
+                  },
+                  backgroundColor: theme.colorScheme.primary,
+                  child: const Icon(Icons.save_alt),
+                ),
+                const SizedBox(width: 10,),
+                FloatingActionButton(   //add item button
+                  onPressed: () => {
+                    if(appState.selectedItems.isNotEmpty) appState.addAllSelected()
+                    else{
+                      appState.lastCreated = ListItem(key: const Key('Item'),label: "", checked: false),
+                      appState.addItemToList(),
+                    }
+                  },
+                  backgroundColor: theme.colorScheme.primary,
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            )
+          ),
           bottomNavigationBar: SafeArea(
             bottom: true,
             child: BottomNavigationBar(
