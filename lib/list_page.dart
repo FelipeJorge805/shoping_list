@@ -195,10 +195,14 @@ class _FavoriteListItemState extends State<FavoriteListItem> {
         title: Text(widget.name),
         leading: Icon(Icons.favorite, size: 16, color: selected ? Colors.grey : null),
         onTap: () {
+          if(!selected) {
+            appState.addSelectedItem(widget.name);
+          } else {
+            appState.removeSelectedItem(widget.name);
+          }
           setState(() {
             selected = !selected;
           });
-          appState.addSelectedItem(widget.name);
         },
       ),
     );
