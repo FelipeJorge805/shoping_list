@@ -98,3 +98,42 @@ class ListPage extends StatelessWidget {
     );
   }
 }
+
+class FavoriteListItem extends StatefulWidget {
+  final String name;
+
+  const FavoriteListItem({required Key key, required this.name}) : super(key: key);
+
+  @override
+  _FavoriteListItemState createState() => _FavoriteListItemState();
+}
+
+class _FavoriteListItemState extends State<FavoriteListItem> {
+  bool selected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
+    return Material(
+      type: MaterialType.transparency,
+      child: ListTile(
+        selectedTileColor: Colors.blue,
+        selected: selected,
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+        horizontalTitleGap: 10,
+        minLeadingWidth: 0,
+        minVerticalPadding: 0,
+        contentPadding: const EdgeInsets.all(5),
+        title: Text(widget.name),
+        leading: Icon(Icons.favorite, size: 16, color: selected ? Colors.grey : null),
+        onTap: () {
+          setState(() {
+            selected = !selected;
+          });
+          appState.addSelectedItem(widget.name);
+        },
+      ),
+    );
+  }
+}
