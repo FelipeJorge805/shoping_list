@@ -9,6 +9,7 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    var mostCommon10 = appState.commonItems.keys.take(11).toList();
 
     if (appState.shoppingList.isEmpty && appState.favoritesList.isEmpty) {
       return const Center(
@@ -68,16 +69,9 @@ class ListPage extends StatelessWidget {
                   ),
                   child: ListView.builder(
                     //shrinkWrap: true,
-                    itemCount: appState.favoritesList.length,
+                    itemCount: mostCommon10.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(appState.favoritesList[index]),
-                        leading: const Icon(Icons.favorite),
-                        onTap: () {
-                          //add to selected list and grey out
-                            
-                        }
-                      );
+                      return FavoriteListItem(name: mostCommon10[index], key: ValueKey(index));
                     }
                   ),
                 ),
