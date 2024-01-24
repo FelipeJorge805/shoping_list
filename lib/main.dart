@@ -35,8 +35,11 @@ class MyAppState extends ChangeNotifier {
   ListItem? lastCreated;
 
   void addFavoriteItem(var item){
-    favoritesList.add(item);
-    notifyListeners();
+    if(!favoritesList.contains(item)) {
+      favoritesList.add(item);
+      FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
+      notifyListeners();
+    }
   }
 
   void updateName(oldName, newName){
@@ -44,7 +47,8 @@ class MyAppState extends ChangeNotifier {
     for (var item in shoppingList) {
       if(item.label == oldName){
         item.label = newName;
-        changed = true;
+        notifyListeners();
+        FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
         break;
       }
     }
@@ -53,23 +57,30 @@ class MyAppState extends ChangeNotifier {
 
   void addItemToList(){
     shoppingList.add(lastCreated!);
+    FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
     notifyListeners();
   }
 
   void addCurrentListToHistory(){
-    if(shoppingList.isNotEmpty) allLists.add(Set.from(shoppingList));
-    notifyListeners();
+    if(shoppingList.isNotEmpty) {
+      allLists.add(Set.from(shoppingList));
+      FileStorage().saveDataToFile('history.txt', allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
+      notifyListeners();
+    }
   }
 
   void removeItem(value){
     shoppingList.removeWhere((item) => item.label == value);
+    FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
     notifyListeners();
   }
 
-  changeCheckState(String label, bool newValue) {
+  void changeCheckState(String label, bool newValue) {
     for (var item in shoppingList) {
       if(item.label == label){
         item.checked = newValue;
+        FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
+        notifyListeners();
         break;
       }
     }
@@ -82,6 +93,9 @@ class MyAppState extends ChangeNotifier {
     }else {
       favoritesList.add(item);
     }
+    FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
+    notifyListeners();
+  }
     notifyListeners();
   }
 }
