@@ -23,13 +23,13 @@ class ListPage extends StatelessWidget {
         children: [
           const Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text(textAlign: TextAlign.center, "Select items from your favorites list and your most common items to add to your current list."),
+            child: Text(textAlign: TextAlign.center, "Select items from favorites and most common.\n Add them to your current list."),
           ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(child: Align(child: Text("Favorites", style: TextStyle(fontSize: 16)))),
-              Expanded(child: Align(child: Text('Your most common items', style: TextStyle(fontSize: 16),))),
+              Expanded(child: Align(child: Text('Most Common', style: TextStyle(fontSize: 16),))),
             ],
           ),
           SizedBox(
@@ -41,10 +41,10 @@ class ListPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: const EdgeInsets.all(10), //gets the container away from the edge
+                  margin: const EdgeInsets.only(left:8,bottom: 8,top: 8,right: 4), //gets the container away from the edge
                   //alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height * 0.6,
-                  width: MediaQuery.of(context).size.width * 0.4, 
+                  width: MediaQuery.of(context).size.width * 0.5-12, 
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
@@ -59,10 +59,10 @@ class ListPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.all(10), //gets the container away from the edge
+                  margin: const EdgeInsets.only(left:4,bottom: 8,top: 8,right: 8), //gets the container away from the edge
                   //alignment: Alignment.topLeft,
                   height: MediaQuery.of(context).size.height * 0.6,
-                  width: MediaQuery.of(context).size.width * 0.4, 
+                  width: MediaQuery.of(context).size.width * 0.5-12, 
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
