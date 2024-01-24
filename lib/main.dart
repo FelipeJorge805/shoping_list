@@ -64,9 +64,10 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyAppState extends ChangeNotifier {
+  List<String> selectedItems = [];
   Set<ListItem> shoppingList = {};
   List<Set<ListItem>> allLists = [];
-  List<ListItem> favoritesList = [];
+  List<String> favoritesList = [];
   ListItem? lastCreated;
 
   void addFavoriteItem(var item){
@@ -125,6 +126,13 @@ class MyAppState extends ChangeNotifier {
     }else {
       favoritesList.add(item);
     }
+    FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
+    notifyListeners();
+  }
+
+  void reorderFavorites(int oldIndex, int newIndex) {
+    final item = favoritesList.removeAt(oldIndex);
+    favoritesList.insert(newIndex, item);
     FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
     notifyListeners();
   }
