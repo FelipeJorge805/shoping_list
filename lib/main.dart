@@ -35,6 +35,10 @@ class _MyAppState extends State<MyApp> {
       appState.allLists = List.of(historyValue.split("\n").map((e) => Set.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
       appState.counter = appState.allLists.length;
     }
+    List<String> names = await storage.readNames();
+    if (names.isNotEmpty) {
+      appState.listNames = names;
+      appState.currentlistName = appState.listNames.removeLast();
     }
   }
   

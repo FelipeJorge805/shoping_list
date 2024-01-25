@@ -33,6 +33,11 @@ class FileStorage{
       return "Error";
     }
   }
+  
+  Future<List<String>> readNames() async {
+    final file = await getLocalFile('names.txt');
+    return file.readAsLines();
+  }
 
   Future saveFavoritesList(List<String> favoritesList) async {
     final file = await getLocalFile('favorites.txt');
