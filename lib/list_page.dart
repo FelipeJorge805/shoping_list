@@ -182,10 +182,10 @@ class FavoriteListItem extends StatefulWidget {
   const FavoriteListItem({required Key key, required this.name}) : super(key: key);
 
   @override
-  _FavoriteListItemState createState() => _FavoriteListItemState();
+  FavoriteListItemState createState() => FavoriteListItemState();
 }
 
-class _FavoriteListItemState extends State<FavoriteListItem> {
+class FavoriteListItemState extends State<FavoriteListItem> {
   bool selected = false;
 
   @override
