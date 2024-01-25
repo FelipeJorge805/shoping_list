@@ -94,8 +94,8 @@ class ListPage extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
         children: [
-          Text("List-${appState.counter} "), 
-          Text("${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}")
+          Text(appState.currentlistName.split("|")[0]),
+          Text(appState.currentlistName.split("|")[1])
         ]
       ),
       /*Dismissible(

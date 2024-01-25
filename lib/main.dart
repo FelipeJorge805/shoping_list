@@ -76,7 +76,7 @@ class MyAppState extends ChangeNotifier {
   List<String> favoritesList = [];
   Map<String,int> commonItems = {};
   int counter = 1;
-  String currentlistName = "";
+  String currentlistName = "|";
   List<String> listNames = [];
   ListItem? lastCreated;
 
@@ -131,6 +131,7 @@ class MyAppState extends ChangeNotifier {
 
   void addItemToList(){
     shoppingList.add(lastCreated!);
+    currentlistName="List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
@@ -206,6 +207,7 @@ class MyAppState extends ChangeNotifier {
       shoppingList.add(ListItem(label: item, checked: false));
     }
     selectedItems.clear();
+    currentlistName="List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
@@ -227,6 +229,7 @@ class MyAppState extends ChangeNotifier {
       shoppingList.clear();
     }
     shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false)));
+    currentlistName="List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
