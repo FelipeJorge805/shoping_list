@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     String historyValue = await storage.readFile('history.txt');
     if(historyValue != "") {
       appState.allLists = List.of(historyValue.split("\n").map((e) => Set.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
-      appState.counter = appState.allLists.length;
+      appState.counter = appState.allLists.length+1;
       appState.calculateCommonItems();
     }
     List<String> names = await storage.readNames();
@@ -94,10 +94,13 @@ class MyAppState extends ChangeNotifier {
   }
 
   void updateListName(String oldName, String newName){
-    listNames.remove(oldName);
-    listNames.add(newName);
-    appendCurrentAndSave();
-    notifyListeners();
+    int index = listNames.indexOf(oldName);
+    if (index != -1) {
+      listNames.removeAt(index);
+      listNames.insert(index, newName);
+      appendCurrentAndSave();
+      notifyListeners();
+    }
   }
 
   void setCurrentListName(String name){
@@ -142,6 +145,7 @@ class MyAppState extends ChangeNotifier {
       allLists.add(Set.from(shoppingList));
       calculateCommonItems();
       counter++;
+      addListName(currentlistName);
       FileStorage().saveHistoryList(allLists);
       notifyListeners();
     }
@@ -149,7 +153,7 @@ class MyAppState extends ChangeNotifier {
 
   void calculateCommonItems() {
     commonItems.clear();
-    if(allLists.length > 1) {
+    if(allLists.isNotEmpty) {
       for (var list in allLists) {
         for (var item in list) {
           commonItems.update(item.label.toLowerCase(), (value) => value + 1, ifAbsent: () => 1);
@@ -219,7 +223,7 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeList() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
+  void removeListFromHistory() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
     counter--;
     FileStorage().saveHistoryList(allLists);
     notifyListeners();

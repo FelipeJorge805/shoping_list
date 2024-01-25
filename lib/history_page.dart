@@ -40,7 +40,8 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
           onDismissed: (direction) => {
             history.removeAt(listIndex), //shallow copy so List at listIndex gets removed in appState.allLists as well
-            appState.removeList(),
+            appState.removeListFromHistory(),
+            appState.removeListName(appState.listNames[listIndex]),
           },
           confirmDismiss: (direction) => showDialog<bool>(
             context: context,
@@ -107,11 +108,14 @@ class _HistoryPageState extends State<HistoryPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         fillColor: Colors.transparent,
-                        labelText: "List-${listIndex + 1} ",
+                        labelText: appState.listNames[listIndex].split("|")[0],
                       ),
+                      onSubmitted: (value) {
+                        appState.updateListName(appState.listNames[listIndex], value);
+                      },
                     ),
                   ),
-                  Text("${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}"),
+                  Text(appState.listNames[listIndex].split("|")[1]),
                 ]
               ),
               children: [
