@@ -71,7 +71,7 @@ class ListPage extends StatelessWidget {
                     //shrinkWrap: true,
                     itemCount: mostCommon10.length,
                     itemBuilder: (context, index) {
-                      return FavoriteListItem(name: mostCommon10[index], key: ValueKey(index));
+                      return FavoriteListItem(name: mostCommon10[index].replaceFirst(mostCommon10.first.characters.first, mostCommon10.first.characters.first.toUpperCase()), key: ValueKey(index));
                     }
                   ),
                 ),
