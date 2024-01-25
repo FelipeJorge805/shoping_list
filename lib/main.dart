@@ -101,13 +101,13 @@ class MyAppState extends ChangeNotifier {
 
   void setCurrentListName(String name){
     currentlistName = name;
+    appendCurrentAndSave();
     notifyListeners();
   }
 
-  void appendCurrentAndSave(){
-    listNames.add(currentlistName);
-    FileStorage().saveNames(listNames);
-    notifyListeners();
+  void appendCurrentAndSave() {
+    List<String> updatedListNames = [...listNames, currentlistName];
+    FileStorage().saveNames(updatedListNames);
   }
 
   void addFavoriteItem(var item){
@@ -131,7 +131,7 @@ class MyAppState extends ChangeNotifier {
 
   void addItemToList(){
     shoppingList.add(lastCreated!);
-    currentlistName="List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
+    setCurrentListName("List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
@@ -207,7 +207,7 @@ class MyAppState extends ChangeNotifier {
       shoppingList.add(ListItem(label: item, checked: false));
     }
     selectedItems.clear();
-    currentlistName="List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
+    setCurrentListName("List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
@@ -229,7 +229,7 @@ class MyAppState extends ChangeNotifier {
       shoppingList.clear();
     }
     shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false)));
-    currentlistName="List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
+    setCurrentListName("List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
