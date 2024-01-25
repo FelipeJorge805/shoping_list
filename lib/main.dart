@@ -99,6 +99,16 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setCurrentListName(String name){
+    currentlistName = name;
+    notifyListeners();
+  }
+
+  void appendCurrentAndSave(){
+    listNames.add(currentlistName);
+    FileStorage().saveNames(listNames);
+    notifyListeners();
+  }
 
   void addFavoriteItem(var item){
     if(!favoritesList.contains(item)) {
