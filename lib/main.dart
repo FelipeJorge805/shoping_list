@@ -80,6 +80,13 @@ class MyAppState extends ChangeNotifier {
   List<String> listNames = [];
   ListItem? lastCreated;
 
+  void addListName(String name){
+    listNames.add(name);
+    appendCurrentAndSave();
+    notifyListeners();
+  }
+
+
   void addFavoriteItem(var item){
     if(!favoritesList.contains(item)) {
       favoritesList.add(item);
