@@ -10,6 +10,7 @@ class ListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var mostCommon10 = appState.commonItems.keys.take(10).toList();
+    mostCommon10 = mostCommon10.map((item) => item.replaceFirst(item[0], item[0].toUpperCase())).toList();
 
     if (appState.shoppingList.isEmpty && appState.favoritesList.isEmpty) {
       return const Center(
@@ -71,7 +72,7 @@ class ListPage extends StatelessWidget {
                     //shrinkWrap: true,
                     itemCount: mostCommon10.length,
                     itemBuilder: (context, index) {
-                      return FavoriteListItem(name: mostCommon10[index].replaceFirst(mostCommon10.first.characters.first, mostCommon10.first.characters.first.toUpperCase()), key: ValueKey(index));
+                      return FavoriteListItem(name: mostCommon10[index], key: ValueKey(index));
                     }
                   ),
                 ),
