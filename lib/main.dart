@@ -77,7 +77,7 @@ class MyAppState extends ChangeNotifier {
   void addFavoriteItem(var item){
     if(!favoritesList.contains(item)) {
       favoritesList.add(item);
-      FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
+      FileStorage().saveFavoritesList(favoritesList);
     }
     notifyListeners();  //needed to update the Dismissible widget even if data hasn't changed
   }
@@ -87,7 +87,7 @@ class MyAppState extends ChangeNotifier {
       if(item.label == oldName){
         item.label = newName;
         notifyListeners();
-        FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
+        FileStorage().saveCurrentList(shoppingList);
         break;
       }
     }
@@ -95,7 +95,7 @@ class MyAppState extends ChangeNotifier {
 
   void addItemToList(){
     shoppingList.add(lastCreated!);
-    FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
+    FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 
@@ -103,7 +103,7 @@ class MyAppState extends ChangeNotifier {
     if(shoppingList.isNotEmpty) {
       allLists.add(Set.from(shoppingList));
       calculateCommonItems();
-      FileStorage().saveDataToFile('history.txt', allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
+      FileStorage().saveHistoryList(allLists);
       notifyListeners();
     }
   }
@@ -122,7 +122,7 @@ class MyAppState extends ChangeNotifier {
 
   void removeItem(value){
     shoppingList.removeWhere((item) => item.label == value);
-    FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
+    FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 
@@ -130,7 +130,7 @@ class MyAppState extends ChangeNotifier {
     for (var item in shoppingList) {
       if(item.label == label){
         item.checked = newValue;
-        FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
+        FileStorage().saveCurrentList(shoppingList);
         notifyListeners();
         break;
       }
@@ -143,14 +143,14 @@ class MyAppState extends ChangeNotifier {
     }else {
       favoritesList.add(item);
     }
-    FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
+    FileStorage().saveFavoritesList(favoritesList);
     notifyListeners();
   }
 
   void reorderFavorites(int oldIndex, int newIndex) {
     final item = favoritesList.removeAt(oldIndex);
     favoritesList.insert(newIndex, item);
-    FileStorage().saveDataToFile('favorites.txt', favoritesList.join("\n"));
+    FileStorage().saveFavoritesList(favoritesList);
     notifyListeners();
   }
 
@@ -169,18 +169,18 @@ class MyAppState extends ChangeNotifier {
       shoppingList.add(ListItem(label: item, checked: false));
     }
     selectedItems.clear();
-    FileStorage().saveDataToFile('current.txt', shoppingList.map((e) => e.toString()).join("\n"));
+    FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 
   void clearShoppingList() {
     shoppingList.clear();
-    FileStorage().saveDataToFile('current.txt', '');
+    FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 
   void removeList() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
-    FileStorage().saveDataToFile('history.txt', allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
+    FileStorage().saveHistoryList(allLists);
     notifyListeners();
   }
 
@@ -189,7 +189,7 @@ class MyAppState extends ChangeNotifier {
       shoppingList.clear();
     }
     shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false)));
-    FileStorage().saveDataToFile('current_list.txt', shoppingList.map((e) => e.toString()).join("\n"));
+    FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 }

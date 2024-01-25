@@ -16,11 +16,11 @@ class FileStorage{
     return File('$path/$filename').create();
   }
 
-  Future<File> saveDataToFile(String fileName, var data) async {
+  /*Future<File> saveDataToFile(String fileName, var data) async {
     // Write the variable as a string to the file.
     final file = await getLocalFile(fileName);
     return file.writeAsString('$data');
-  }
+  }*/
 
   Future<String> readFile(String fileName) async {
     try {
