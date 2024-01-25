@@ -34,6 +34,7 @@ class _MyAppState extends State<MyApp> {
     if(historyValue != "") {
       appState.allLists = List.of(historyValue.split("\n").map((e) => Set.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
       appState.counter = appState.allLists.length;
+      appState.calculateCommonItems();
     }
     List<String> names = await storage.readNames();
     if (names.isNotEmpty) {
