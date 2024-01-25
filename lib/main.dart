@@ -33,6 +33,8 @@ class _MyAppState extends State<MyApp> {
     String historyValue = await storage.readFile('history.txt');
     if(historyValue != "") {
       appState.allLists = List.of(historyValue.split("\n").map((e) => Set.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
+      appState.counter = appState.allLists.length;
+    }
     }
   }
   
@@ -103,6 +105,7 @@ class MyAppState extends ChangeNotifier {
     if(shoppingList.isNotEmpty) {
       allLists.add(Set.from(shoppingList));
       calculateCommonItems();
+      counter++;
       FileStorage().saveHistoryList(allLists);
       notifyListeners();
     }
@@ -180,6 +183,7 @@ class MyAppState extends ChangeNotifier {
   }
 
   void removeList() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
+    counter--;
     FileStorage().saveHistoryList(allLists);
     notifyListeners();
   }
