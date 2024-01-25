@@ -96,7 +96,24 @@ class _HistoryPageState extends State<HistoryPage> {
             child: ExpansionTile(
               tilePadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
               subtitle: Text("${list.where((element) => element.checked).length}/${list.length}"),
-              title: Text("List-${listIndex + 1}"),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children:[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: 20,
+                    child: TextField(
+                      //selectionHeightStyle: BoxHeightStyle.includeLineSpacingMiddle,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        fillColor: Colors.transparent,
+                        labelText: "List-${listIndex + 1} ",
+                      ),
+                    ),
+                  ),
+                  Text("${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}"),
+                ]
+              ),
               children: [
                 for (var item in list)
                   ListItem(label: item.label, checked: item.checked)
