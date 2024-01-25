@@ -69,6 +69,9 @@ class MyAppState extends ChangeNotifier {
   List<Set<ListItem>> allLists = [];
   List<String> favoritesList = [];
   Map<String,int> commonItems = {};
+  int counter = 1;
+  String currentlistName = "";
+  List<String> listNames = [];
   ListItem? lastCreated;
 
   void addFavoriteItem(var item){
