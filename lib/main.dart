@@ -86,6 +86,12 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeListName(String name){
+    listNames.remove(name);
+    appendCurrentAndSave();
+    notifyListeners();
+  }
+
 
   void addFavoriteItem(var item){
     if(!favoritesList.contains(item)) {
