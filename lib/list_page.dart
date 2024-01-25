@@ -9,11 +9,11 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var mostCommon10 = appState.commonItems.keys.take(11).toList();
+    var mostCommon10 = appState.commonItems.keys.take(10).toList();
 
     if (appState.shoppingList.isEmpty && appState.favoritesList.isEmpty) {
       return const Center(
-        child: Text('No items yet.'),
+        child: Text(textAlign: TextAlign.center, 'No items yet.\n\n You can later create lists based on favorites and most common items \n\nClick the + button to add items to your list.'),
       );
     }
 
@@ -91,7 +91,14 @@ class ListPage extends StatelessWidget {
           icon: const Icon(Icons.save),
           onPressed: () => {appState.addCurrentListToHistory(), appState.shoppingList.clear(),}
         ),*/
-      title: Dismissible(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+        children: [
+          Text("List-${appState.counter} "), 
+          Text("${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}")
+        ]
+      ),
+      /*Dismissible(
         key: UniqueKey(),
         background: Container(
           alignment: AlignmentDirectional.centerStart,
@@ -134,7 +141,7 @@ class ListPage extends StatelessWidget {
           icon: //save icon
             const Icon(Icons.save_alt),
         )
-      ),
+      ),*/
       subtitle: ListView(
         children: [
           for (var item in appState.shoppingList) 
