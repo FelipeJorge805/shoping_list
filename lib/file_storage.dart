@@ -53,4 +53,9 @@ class FileStorage{
     final file = await getLocalFile('history.txt');
     file.writeAsString(allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
   }
+
+  Future saveNames(List<String> listNames) async {
+    final file = await getLocalFile('names.txt');
+    file.writeAsString(listNames.join("\n"));
+  }
 }
