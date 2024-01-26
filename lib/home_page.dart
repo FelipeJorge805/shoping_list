@@ -4,7 +4,7 @@ import 'package:shoping_list/favorites_page.dart';
 import 'package:shoping_list/history_page.dart';
 import 'package:shoping_list/list_page.dart';
 import 'package:shoping_list/main.dart';
-
+import 'settings_page.dart';
 import 'list_item.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         case 2:
           page = const HistoryPage();
         case 3:
-          page = const Placeholder();
+          page = const SettingsPage();
         default:
             throw UnimplementedError('No widget for $selectedIndex');
       }
