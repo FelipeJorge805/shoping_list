@@ -44,9 +44,11 @@ class _HomePageState extends State<HomePage> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: AppBar(
-            title: Center(child: Text("List", style: style,)),
+            title: Text("List", style: style,),
             //leading: const Icon(Icons.menu),
             backgroundColor: theme.colorScheme.primary,
+            centerTitle: true,
+            toolbarHeight: constraints.maxHeight * 0.05,
           ),
           floatingActionButton: selectedIndex != 0 ? null : 
           Padding(
