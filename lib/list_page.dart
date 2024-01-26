@@ -24,7 +24,7 @@ class ListPage extends StatelessWidget {
         children: [
           const Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text(textAlign: TextAlign.center, "Select items from favorites and most common.\n Add them to your current list."),
+            child: Text(textAlign: TextAlign.center, "Select items from favorites and most common.\n Add them to your current list.\n Or start an empty list."),
           ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +81,7 @@ class ListPage extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          const Text('Add some items to your list by tapping the + button.'	),
+          const Text('Add new or selected items to your list with the + button.'),
         ],
       );
     }
