@@ -78,8 +78,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () => {
                     if(appState.selectedItems.isNotEmpty) appState.addAllSelected()
                     else{
-                      appState.lastCreated = ListItem(key: const Key('Item'),label: "", checked: false),
-                      appState.addItemToList(),
+                      appState.addItemToList(ListItem(key: const Key('Item'),label: "", checked: false)),
                     }
                   },
                   backgroundColor: theme.colorScheme.primary,

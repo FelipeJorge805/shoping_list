@@ -79,7 +79,6 @@ class MyAppState extends ChangeNotifier {
   int counter = 1;
   String currentlistName = "|";
   List<String> listNames = [];
-  ListItem? lastCreated;
 
   void addListName(String name){
     listNames.add(name);
@@ -133,8 +132,8 @@ class MyAppState extends ChangeNotifier {
     }
   }
 
-  void addItemToList(){
-    shoppingList.add(lastCreated!);
+  void addItemToList(ListItem lastCreated){
+    shoppingList.add(lastCreated);
     setCurrentListName("List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
