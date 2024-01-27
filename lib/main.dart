@@ -87,6 +87,7 @@ class MyAppState extends ChangeNotifier {
   List<String> favoritesList = [];
   Map<String,int> commonItems = {};
   int listCounter = 1;
+  int checkedCounter = 0;
   String currentlistName = "|";
   List<String> listNames = [];
   List<bool> settings = [false, false, false];
@@ -144,7 +145,7 @@ class MyAppState extends ChangeNotifier {
   }
 
   void addItemToList(ListItem lastCreated){
-    shoppingList.add(lastCreated);
+    shoppingList.insert(shoppingList.length-checkedCounter,lastCreated);
     setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
@@ -183,7 +184,8 @@ class MyAppState extends ChangeNotifier {
     for (var item in shoppingList) {
       if(item.label == label){
         item.checked = newValue;
-        reorderOnCheck(item, newValue);
+        settings[2] ? reorderOnCheck(item, newValue): null;
+        newValue ? checkedCounter++ : checkedCounter--;
         FileStorage().saveCurrentList(shoppingList);
         notifyListeners();
         break;
@@ -192,12 +194,14 @@ class MyAppState extends ChangeNotifier {
   }
 
   void reorderOnCheck(ListItem item, bool newValue) {
-    if(newValue) {
+    int length = shoppingList.length;
+    if(length == 1) return; //if only one item, don't reorder
+    if(newValue) {  //move to bottom
       shoppingList.remove(item);
-      shoppingList.add(item);
-    }else {
+      shoppingList.insert(length-1-checkedCounter,item);
+    }else { //move to top
       shoppingList.remove(item);
-      shoppingList.insert(0, item);
+      shoppingList.insert(length-checkedCounter, item);
     }
   }
   void toggleFavorites(var item) {
@@ -239,6 +243,7 @@ class MyAppState extends ChangeNotifier {
 
   void clearShoppingList() {
     shoppingList.clear();
+    checkedCounter = 0;
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
@@ -251,7 +256,7 @@ class MyAppState extends ChangeNotifier {
 
   void addAllToCurrent(List<ListItem> list, {required bool overwrite}) {
     if(overwrite) {
-      shoppingList.clear();
+      clearShoppingList();
     }
     shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false)));
     setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
