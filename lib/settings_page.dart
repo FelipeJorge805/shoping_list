@@ -13,7 +13,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<bool> isSwitched = context.watch<MyAppState>().settings;
+    var appState = context.watch<MyAppState>();
 
     return GridView.count(
       crossAxisCount: 2, // Number of columns in the grid
@@ -23,11 +23,11 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Uses system settings. Override by turning off and using "dark mode".',
           child: SwitchListTile(
             title: const Text('System Theme'),
-            value: isSwitched[0],
+            value: appState.settings[0],
             shape: Border.all(width: 2, color: Colors.red),
             onChanged: (bool? value) {
               setState(() {
-                isSwitched[0] = value!;
+                appState.changeSettings(0, value!);
               });
             },
           ),
@@ -36,10 +36,10 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Light mode is default. Dark mode if toggled on.',
           child: SwitchListTile(
             title: const Text('Dark Mode'),
-            value: isSwitched[1],
+            value: appState.settings[1],
             onChanged: (bool? value) {
               setState(() {
-                isSwitched[1] = value!;
+                appState.changeSettings(1, value!);
               });
             },
           ),
@@ -48,10 +48,10 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Switch tooltip',
           child: SwitchListTile(
             title: const Text('Move Checked Items to Bottom'),
-            value: isSwitched[2],
+            value: appState.settings[2],
             onChanged: (bool? value) {
               setState(() {
-                isSwitched[2] = value!;
+                appState.changeSettings(2, value!);
               });
             },
           ),
@@ -60,10 +60,10 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Confirmation dialog when deleting Lists from History page.',
           child: SwitchListTile(
             title: const Text('Confirm History List Deletion'),
-            value: isSwitched[3],
+            value: appState.settings[3],
             onChanged: (bool? value) {
               setState(() {
-                isSwitched[3] = value!;
+                appState.changeSettings(3, value!);
               });
             },
           ),
