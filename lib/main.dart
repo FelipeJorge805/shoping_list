@@ -183,6 +183,7 @@ class MyAppState extends ChangeNotifier {
     for (var item in shoppingList) {
       if(item.label == label){
         item.checked = newValue;
+        reorderOnCheck(item, newValue);
         FileStorage().saveCurrentList(shoppingList);
         notifyListeners();
         break;
@@ -190,6 +191,15 @@ class MyAppState extends ChangeNotifier {
     }
   }
 
+  void reorderOnCheck(ListItem item, bool newValue) {
+    if(newValue) {
+      shoppingList.remove(item);
+      shoppingList.add(item);
+    }else {
+      shoppingList.remove(item);
+      shoppingList.insert(0, item);
+    }
+  }
   void toggleFavorites(var item) {
     if(favoritesList.contains(item)){
       favoritesList.remove(item);
