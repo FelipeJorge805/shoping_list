@@ -56,6 +56,18 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
         ),
+        Tooltip(
+          message: 'Confirmation dialog when deleting Lists from History page.',
+          child: SwitchListTile(
+            title: const Text('Confirm History List Deletion'),
+            value: isSwitched[3],
+            onChanged: (bool? value) {
+              setState(() {
+                isSwitched[3] = value!;
+              });
+            },
+          ),
+        ),
       ],
     );
   }
