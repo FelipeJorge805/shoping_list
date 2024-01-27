@@ -55,7 +55,7 @@ class ListPage extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                     itemCount: appState.favoritesList.length,
                     itemBuilder: (context, index) {
-                      return FavoriteListItem(name: appState.favoritesList[index], key: ValueKey(index));
+                      return FavoriteListItem(name: appState.favoritesList[index], key: ValueKey(index), icon: true);
                     }
                   ),
                 ),
@@ -72,7 +72,7 @@ class ListPage extends StatelessWidget {
                     //shrinkWrap: true,
                     itemCount: mostCommon10.length,
                     itemBuilder: (context, index) {
-                      return FavoriteListItem(name: mostCommon10[index], key: ValueKey(index));
+                      return FavoriteListItem(name: mostCommon10[index], key: ValueKey(index), icon: false);
                     }
                   ),
                 ),
@@ -178,8 +178,9 @@ class ListPage extends StatelessWidget {
 
 class FavoriteListItem extends StatefulWidget {
   final String name;
+  final bool icon;
 
-  const FavoriteListItem({required Key key, required this.name}) : super(key: key);
+  const FavoriteListItem({required Key key, required this.name, required this.icon}) : super(key: key);
 
   @override
   FavoriteListItemState createState() => FavoriteListItemState();
@@ -203,7 +204,7 @@ class FavoriteListItemState extends State<FavoriteListItem> {
         minVerticalPadding: 0,
         contentPadding: const EdgeInsets.all(5),
         title: Text(widget.name),
-        leading: Icon(Icons.favorite, size: 16, color: selected ? Colors.grey : null),
+        leading: widget.icon ? Icon(Icons.favorite, size: 16, color: selected ? Colors.grey : null) : null,
         onTap: () {
           if(!selected) {
             appState.addSelectedItem(widget.name);
