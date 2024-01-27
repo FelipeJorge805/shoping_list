@@ -125,9 +125,9 @@ class MyAppState extends ChangeNotifier {
     FileStorage().saveNames(updatedListNames);
   }
 
-  void addFavoriteItem(var item){
-    if(!favoritesList.contains(item)) {
-      favoritesList.add(item);
+  void addFavoriteItem(String name){
+    if(name != "" && !favoritesList.contains(name)) {
+      favoritesList.add(name);
       FileStorage().saveFavoritesList(favoritesList);
     }
     notifyListeners();  //needed to update the Dismissible widget even if data hasn't changed
