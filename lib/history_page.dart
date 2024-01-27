@@ -111,7 +111,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         labelText: appState.listNames[listIndex].split("|")[0],
                       ),
                       onSubmitted: (value) {
-                        appState.updateListName(appState.listNames[listIndex], value);
+                        appState.updateListName('${appState.listNames[listIndex]}|${appState.listNames[listIndex].split("|")[1]}', value);
                       },
                     ),
                   ),
