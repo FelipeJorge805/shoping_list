@@ -108,14 +108,14 @@ class _HistoryPageState extends State<HistoryPage> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         fillColor: Colors.transparent,
-                        labelText: appState.listNames[listIndex].split("|")[0],
+                        labelText: appState.listNames[listIndex].split("|")[0], //refactor date string storing
                       ),
                       onSubmitted: (value) {
-                        appState.updateListName('${appState.listNames[listIndex]}|${appState.listNames[listIndex].split("|")[1]}', value);
+                        appState.updateListName('${appState.listNames[listIndex]}|${appState.listNames[listIndex].split("|")[1]}', value); //refactor date string storing
                       },
                     ),
                   ),
-                  Text(appState.listNames[listIndex].split("|")[1]),
+                  Text(appState.listNames[listIndex].split("|")[1]), //refactor date string storing
                 ]
               ),
               children: [
