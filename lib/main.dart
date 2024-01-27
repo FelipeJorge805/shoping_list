@@ -27,13 +27,13 @@ class _MyAppState extends State<MyApp> {
     }
     String currentValue = await storage.readFile('current.txt');
     if(currentValue != "") {
-      appState.shoppingList = Set.of(currentValue.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")));
+      appState.shoppingList = List.of(currentValue.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")));
     }
     //context.read<MyAppState>().allLists = jsonDecode(value);
     String historyValue = await storage.readFile('history.txt');
     if(historyValue != "") {
-      appState.allLists = List.of(historyValue.split("\n").map((e) => Set.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
-      appState.counter = appState.allLists.length+1;
+      appState.allLists = List.of(historyValue.split("\n").map((e) => List.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
+      appState.listCounter = appState.allLists.length+1;
       appState.calculateCommonItems();
     }
     List<String> names = await storage.readNames();
@@ -72,11 +72,11 @@ class _MyAppState extends State<MyApp> {
 
 class MyAppState extends ChangeNotifier {
   List<String> selectedItems = [];
-  Set<ListItem> shoppingList = {};
-  List<Set<ListItem>> allLists = [];
+  List<ListItem> shoppingList = [];
+  List<List<ListItem>> allLists = [];
   List<String> favoritesList = [];
   Map<String,int> commonItems = {};
-  int counter = 1;
+  int listCounter = 1;
   String currentlistName = "|";
   List<String> listNames = [];
   List<bool> settings = [false, false, false];
@@ -135,16 +135,16 @@ class MyAppState extends ChangeNotifier {
 
   void addItemToList(ListItem lastCreated){
     shoppingList.add(lastCreated);
-    setCurrentListName("List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+    setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 
   void addCurrentListToHistory(){
     if(shoppingList.isNotEmpty) {
-      allLists.add(Set.from(shoppingList));
+      allLists.add(List.from(shoppingList));
       calculateCommonItems();
-      counter++;
+      listCounter++;
       addListName(currentlistName);
       FileStorage().saveHistoryList(allLists);
       notifyListeners();
@@ -212,7 +212,7 @@ class MyAppState extends ChangeNotifier {
       shoppingList.add(ListItem(label: item, checked: false));
     }
     selectedItems.clear();
-    setCurrentListName("List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+    setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
@@ -224,17 +224,17 @@ class MyAppState extends ChangeNotifier {
   }
 
   void removeListFromHistory() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
-    counter--;
+    listCounter--;
     FileStorage().saveHistoryList(allLists);
     notifyListeners();
   }
 
-  void addAllToCurrent(Set<ListItem> list, {required bool overwrite}) {
+  void addAllToCurrent(List<ListItem> list, {required bool overwrite}) {
     if(overwrite) {
       shoppingList.clear();
     }
     shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false)));
-    setCurrentListName("List-$counter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+    setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }

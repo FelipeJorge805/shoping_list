@@ -44,12 +44,12 @@ class FileStorage{
     file.writeAsString(favoritesList.join("\n"));
   }
 
-  Future saveCurrentList(Set<ListItem> shoppingList) async {
+  Future saveCurrentList(List<ListItem> shoppingList) async {
     final file = await getLocalFile('current.txt');
     file.writeAsString(shoppingList.map((e) => e.toString()).join("\n"));
   }
 
-  Future saveHistoryList(List<Set<ListItem>> allLists) async {
+  Future saveHistoryList(List<List<ListItem>> allLists) async {
     final file = await getLocalFile('history.txt');
     file.writeAsString(allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
   }
