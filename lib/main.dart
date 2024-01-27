@@ -79,6 +79,7 @@ class MyAppState extends ChangeNotifier {
   int counter = 1;
   String currentlistName = "|";
   List<String> listNames = [];
+  List<bool> settings = [false, false, false];
 
   void addListName(String name){
     listNames.add(name);

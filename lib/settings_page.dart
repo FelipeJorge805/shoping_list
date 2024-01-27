@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoping_list/main.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -8,32 +10,52 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-    List<bool> isSelected = [false, false];
 
   @override
   Widget build(BuildContext context) {
-    
+    List<bool> isSwitched = context.watch<MyAppState>().settings;
 
     return GridView.count(
       crossAxisCount: 2, // Number of columns in the grid
+      childAspectRatio: 3.5, 
       children: [
-        ToggleButtons(
-          direction: Axis.vertical,
-          constraints: BoxConstraints.expand(width: MediaQuery.of(context).size.width/3, height: MediaQuery.of(context).size.height/10),
-          borderRadius: BorderRadius.circular(10.0), 
-          borderWidth: 0,
-          renderBorder: false,
-          isSelected: isSelected,
-          onPressed: (index) => {
-            //isSelected[index] = !isSelected[index],
-            //chanege state
-            setState(() {isSelected[index] = !isSelected[index];})
-          },
-          children: [
-            isSelected[0] ? const Icon(Icons.delete) : const Icon(Icons.delete_outline),
-            isSelected[1] ? const Icon(Icons.delete) : const Icon(Icons.delete_outline),
-            ],
-        )
+        Tooltip(
+          message: 'Uses system settings. Override by turning off and using "dark mode".',
+          child: SwitchListTile(
+            title: const Text('System Theme'),
+            value: isSwitched[0],
+            shape: Border.all(width: 2, color: Colors.red),
+            onChanged: (bool? value) {
+              setState(() {
+                isSwitched[0] = value!;
+              });
+            },
+          ),
+        ),
+        Tooltip(
+          message: 'Light mode is default. Dark mode if toggled on.',
+          child: SwitchListTile(
+            title: const Text('Dark Mode'),
+            value: isSwitched[1],
+            onChanged: (bool? value) {
+              setState(() {
+                isSwitched[1] = value!;
+              });
+            },
+          ),
+        ),
+        Tooltip(
+          message: 'Switch tooltip',
+          child: SwitchListTile(
+            title: const Text('Move Checked Items to Bottom'),
+            value: isSwitched[2],
+            onChanged: (bool? value) {
+              setState(() {
+                isSwitched[2] = value!;
+              });
+            },
+          ),
+        ),
       ],
     );
   }
