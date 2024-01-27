@@ -45,13 +45,23 @@ class _MyAppState extends State<MyApp> {
   
   @override
   Widget build(BuildContext context) {
+    bool system = appState.settings[0];
+    bool dark = appState.settings[1];
+
     return ChangeNotifierProvider(
       create: (context) => appState,
       child: MaterialApp(
         title: 'List',
+        themeMode: system ? ThemeMode.system : (dark ? ThemeMode.dark : ThemeMode.light),
         theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow.shade500),
+          //brightness: Brightness.light,
+          useMaterial3: false,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          useMaterial3: false,
+          colorScheme: ColorScheme.dark(primary: Colors.grey, brightness: Brightness.dark)//.fromSeed(seedColor: Colors.black, brightness: Brightness.dark),
         ),
         home: FutureBuilder(
           future: loadFiles(),
