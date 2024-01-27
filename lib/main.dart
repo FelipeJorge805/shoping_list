@@ -41,6 +41,10 @@ class _MyAppState extends State<MyApp> {
       appState.listNames = names;
       appState.currentlistName = appState.listNames.removeLast();
     }
+    List<bool> settings = await storage.readSettings();
+    if(settings.isNotEmpty) {
+      appState.settings = settings;
+    }
   }
   
   @override
@@ -91,6 +95,12 @@ class MyAppState extends ChangeNotifier {
   String currentlistName = "|";
   List<String> listNames = [];
   List<bool> settings = [false, false, false, false];
+
+  void changeSettings(int index, bool value) {
+    settings[index] = value;
+    FileStorage().saveSettings(settings);
+    notifyListeners();
+  }
 
   void addListName(String name){
     listNames.add(name);
