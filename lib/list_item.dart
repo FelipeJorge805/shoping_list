@@ -14,6 +14,19 @@ class ListItem extends StatefulWidget{
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return "$label-$checked";
   }
+
+  factory ListItem.fromJson(Map<String, dynamic> json) {
+    String label = json['label'];
+    bool checked = json['checked'];
+    return ListItem(label: label, checked: checked);
+  }
+
+  toJson() {
+    return {
+      'label': label,
+      'checked': checked,
+    };
+  }
 }
 
 class _ListItemState extends State<ListItem> {
