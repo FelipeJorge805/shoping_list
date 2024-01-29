@@ -15,9 +15,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    return GridView.count(
-      crossAxisCount: 2, // Number of columns in the grid
-      childAspectRatio: 3.5, 
+    return Column(
       children: [
         Tooltip(
           message: 'Uses system settings. Override by turning off and using "dark mode".',
