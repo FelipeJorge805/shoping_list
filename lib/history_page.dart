@@ -26,106 +26,151 @@ class _HistoryPageState extends State<HistoryPage> {
       itemCount: history.length,
       itemBuilder: (context, listIndex) {
         var list = history[listIndex];
-        return Dismissible(
-          key: UniqueKey(),
-          background: Container(
-            alignment: AlignmentDirectional.centerStart,
-            color: Colors.red,
-            child: const Icon(Icons.cancel),
-          ),
-          secondaryBackground: Container(
-            alignment: AlignmentDirectional.centerEnd,
-            color: Colors.red,
-            child: const Icon(Icons.cancel),
-          ),
-          onDismissed: (direction) => {
-            history.removeAt(listIndex), //shallow copy so List at listIndex gets removed in appState.allLists as well
-            appState.removeListFromHistory(),
-            appState.removeListName(appState.listNames[listIndex]),
-          },
-          confirmDismiss: (direction) => showDialog<bool>(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Delete list?"),
-                content: const Text("Are you sure you want to delete this list? This action cannot be undone."),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text("Cancel"),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text("Delete"),
-                  ),
-                ],
-              );
-            },
-          ),
-          child: GestureDetector(
-            onLongPress: () {
-              showDialog<bool>(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text("Make this list your current list?"),
-                    content: const Text("Are you sure you want to make this list your current list?"),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text("Cancel"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          appState.addAllToCurrent(list, overwrite: false);
-                          Navigator.of(context).pop(true);
-                        },
-                        child: const Text("Add"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          appState.addAllToCurrent(list, overwrite: true);
-                          Navigator.of(context).pop(true);
-                        },
-                        child: const Text("Overwrite"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            child: ExpansionTile(
-              tilePadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
-              subtitle: Text("${list.where((element) => element.checked).length}/${list.length}"),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:[
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    height: 20,
-                    child: TextField(
-                      //selectionHeightStyle: BoxHeightStyle.includeLineSpacingMiddle,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        fillColor: Colors.transparent,
-                        labelText: appState.listNames[listIndex].split("|")[0], //refactor date string storing
-                      ),
-                      onSubmitted: (value) {
-                        appState.updateListName('${appState.listNames[listIndex]}|${appState.listNames[listIndex].split("|")[1]}', value); //refactor date string storing
-                      },
+        return GestureDetector(
+          onLongPress: () {
+            showDialog<bool>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Make this list your current list?"),
+                  content: const Text("Are you sure you want to make this list your current list?"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text("Cancel"),
                     ),
-                  ),
-                  Text(appState.listNames[listIndex].split("|")[1]), //refactor date string storing
-                ]
-              ),
-              children: [
-                for (var item in list)
-                  ListItem(label: item.label, checked: item.checked)
-              ],
+                    TextButton(
+                      onPressed: () {
+                        appState.addAllToCurrent(list, overwrite: false);
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text("Add"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        appState.addAllToCurrent(list, overwrite: true);
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text("Overwrite"),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Dismissible(
+            key: UniqueKey(),
+            background: Container(
+              alignment: AlignmentDirectional.centerStart,
+              color: Colors.red,
+              child: const Icon(Icons.cancel),
             ),
+            secondaryBackground: Container(
+              alignment: AlignmentDirectional.centerEnd,
+              color: Colors.red,
+              child: const Icon(Icons.cancel),
+            ),
+            onDismissed: (direction) {
+              setState(() {
+                history.removeAt(listIndex);
+                appState.removeListFromHistory();
+                appState.removeListName(appState.listNames[listIndex]);
+              });
+            },
+            confirmDismiss:
+              appState.settings[3] ? 
+                (direction) => showDialog<bool>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Delete list?"),
+                      content: const Text("Are you sure you want to delete this list? This action cannot be undone."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: const Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: const Text("Delete"),
+                        ),
+                      ],
+                    );
+                  },
+                )
+              : null,
+            child: HistoryListItem(name: appState.listNames[listIndex], date: appState.listNames[listIndex].split("|")[1], list: history[listIndex]),
           ),
         );
       },
+    );
+  }
+}
+
+class HistoryListItem extends StatefulWidget {
+  final String name;
+  final String date;
+  final List<ListItem> list;
+
+  const HistoryListItem({
+    Key? key,
+    required this.name,
+    required this.date,
+    required this.list,
+  }) : super(key: key);
+  
+  @override
+  HistoryListItemState createState() => HistoryListItemState();
+
+  factory HistoryListItem.fromJson(Map<String, dynamic> json) {
+    return HistoryListItem(
+      name: json['name'],
+      date: json['date'],
+      list: List<ListItem>.from(json['list'].map((item) => ListItem.fromJson(item))),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'date': date,
+      'list': list.map((item) => item.toJson()).toList(),
+    };
+  }
+}
+
+class HistoryListItemState extends State<HistoryListItem> {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var history = appState.allLists;
+
+    return ExpansionTile(
+      tilePadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
+      subtitle: Text("${widget.list.where((element) => element.checked).length}/${widget.list.length}"),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.4,
+            height: 20,
+            child: TextField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                fillColor: Colors.transparent,
+                labelText: widget.name,
+              ),
+              onSubmitted: (value) {
+                appState.updateListName('${widget.name}|${widget.date}', value);
+              },
+            ),
+          ),
+          Text(widget.date),
+        ],
+      ),
+      children: [
+        for (var item in widget.list) ListItem(label: item.label, checked: item.checked)
+      ],
     );
   }
 }
