@@ -6,14 +6,16 @@ import 'package:shoping_list/main.dart';
 class HistoryListItem extends StatefulWidget {
   final String name;
   final String date;
+  bool expanded;
   final List<ListItem> list;
 
-  const HistoryListItem({
-    Key? key,
+  HistoryListItem({
+    super.key,
     required this.name,
     required this.date,
     required this.list,
-  }) : super(key: key);
+    this.expanded = false,
+  });
   
   @override
   HistoryListItemState createState() => HistoryListItemState();
@@ -22,6 +24,7 @@ class HistoryListItem extends StatefulWidget {
     return HistoryListItem(
       name: json['name'],
       date: json['date'],
+      expanded: json['expanded'],
       list: List<ListItem>.from(json['list'].map((item) => ListItem.fromJson(item))),
     );
   }
@@ -30,6 +33,7 @@ class HistoryListItem extends StatefulWidget {
     return {
       'name': name,
       'date': date,
+      'expanded': expanded,
       'list': list.map((item) => item.toJson()).toList(),
     };
   }
@@ -39,9 +43,14 @@ class HistoryListItemState extends State<HistoryListItem> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var history = appState.allLists;
 
     return ExpansionTile(
+      onExpansionChanged: (value) {
+        setState(() {
+          widget.expanded = value;
+        });
+      },
+      initiallyExpanded: widget.expanded,
       tilePadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
       subtitle: Text("${widget.list.where((element) => element.checked).length}/${widget.list.length}"),
       title: Row(
@@ -65,7 +74,7 @@ class HistoryListItemState extends State<HistoryListItem> {
         ],
       ),
       children: [
-        for (var item in widget.list) ListItem(label: item.label, checked: item.checked)
+        for (var item in widget.list) item,
       ],
     );
   }
