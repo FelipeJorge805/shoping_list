@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoping_list/file_storage.dart';
+import 'package:shoping_list/history_list_item.dart';
 
 import 'home_page.dart';
 import 'list_item.dart';
@@ -30,10 +31,10 @@ class _MyAppState extends State<MyApp> {
       appState.shoppingList = List.of(currentValue.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true", origin: e.split("-")[2])));
     }
     //context.read<MyAppState>().allLists = jsonDecode(value);
-    String historyValue = await storage.readFile('history.txt');
-    if(historyValue != "") {
-      appState.allLists = List.of(historyValue.split("\n").map((e) => List.from(e.split(",").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")))));
-      appState.listCounter = appState.allLists.length+1;
+    List<HistoryListItem> historyValue = await storage.readHistory();
+    if(historyValue.isNotEmpty) {
+      appState.history = historyValue;
+      appState.listCounter = appState.history.length+1;
       appState.calculateCommonItems();
     }
     List<String> names = await storage.readNames();
@@ -87,7 +88,7 @@ class _MyAppState extends State<MyApp> {
 class MyAppState extends ChangeNotifier {
   List<String> selectedItems = [];
   List<ListItem> shoppingList = [];
-  List<List<ListItem>> allLists = [];
+  List<HistoryListItem> history = [];
   List<String> favoritesList = [];
   Map<String,int> commonItems = {};
   int listCounter = 1;
@@ -143,15 +144,11 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();  //needed to update the Dismissible widget even if data hasn't changed
   }
 
-  void updateName(oldName, newName){
-    for (var item in shoppingList) {
-      if(item.label == oldName){
-        item.label = newName;
-        notifyListeners();
-        FileStorage().saveCurrentList(shoppingList);
-        break;
-      }
-    }
+  void updateName(item, newName){
+    item.label = newName;
+    notifyListeners();
+    if(item.origin=="current") FileStorage().saveCurrentList(shoppingList);
+    if(item.origin=="history") FileStorage().saveHistoryList(history);
   }
 
   void addItemToList(ListItem lastCreated){
@@ -163,20 +160,20 @@ class MyAppState extends ChangeNotifier {
 
   void addCurrentListToHistory(){
     if(shoppingList.isNotEmpty) {
-      allLists.add(List.from(shoppingList));
+      history.add(HistoryListItem(name: currentlistName.split("|")[0], date: currentlistName.split("|")[1], list: List.from(shoppingList)));
       calculateCommonItems();
       listCounter++;
       addListName(currentlistName);
-      FileStorage().saveHistoryList(allLists);
+      FileStorage().saveHistoryList(history);
       notifyListeners();
     }
   }
 
   void calculateCommonItems() {
     commonItems.clear();
-    if(allLists.isNotEmpty) {
-      for (var list in allLists) {
-        for (var item in list) {
+    if(history.isNotEmpty) {
+      for (var historyItem in history) {
+        for (var item in historyItem.list) {
           commonItems.update(item.label.toLowerCase(), (value) => value + 1, ifAbsent: () => 1);
         }
       }
@@ -190,17 +187,12 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeCheckState(String label, bool newValue) {
-    for (var item in shoppingList) {
-      if(item.label == label){
-        item.checked = newValue;
-        settings[2] ? reorderOnCheck(item, newValue): null;
-        newValue ? checkedCounter++ : checkedCounter--;
-        FileStorage().saveCurrentList(shoppingList);
-        notifyListeners();
-        break;
-      }
-    }
+  void changeCheckState(ListItem item, bool newValue) {
+    item.checked = newValue;
+    if(item.origin=="current" && settings[2]) reorderOnCheck(item, newValue);
+    newValue ? checkedCounter++ : checkedCounter--; //after a potential reorderOnCheck call
+    if(item.origin=="current")FileStorage().saveCurrentList(shoppingList);
+    notifyListeners();
   }
 
   void reorderOnCheck(ListItem item, bool newValue) {
@@ -260,7 +252,7 @@ class MyAppState extends ChangeNotifier {
 
   void removeListFromHistory() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
     listCounter--;
-    FileStorage().saveHistoryList(allLists);
+    FileStorage().saveHistoryList(history);
     notifyListeners();
   }
 
