@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:shoping_list/history_list_item.dart';
 import 'package:shoping_list/list_item.dart';
 
 class FileStorage{
@@ -54,9 +56,14 @@ class FileStorage{
     file.writeAsString(shoppingList.map((e) => e.toString()).join("\n"));
   }
 
-  Future saveHistoryList(List<List<ListItem>> allLists) async {
+  Future saveHistoryList(List<HistoryListItem> history) async {
     final file = await getLocalFile('history.txt');
-    file.writeAsString(allLists.map((e) => e.map((e) => e.toString()).join(",")).join("\n"));
+    file.writeAsString(jsonEncode(history.map((e) => e.toJson()).toList()));
+  }
+
+  Future<List<HistoryListItem>> readHistory() async {
+    final file = await getLocalFile('history.txt');
+    return file.readAsString().then(((value) => List.of(jsonDecode(value)).map((e) => HistoryListItem.fromJson(e as Map<String, dynamic>)).toList()));
   }
 
   Future saveNames(List<String> listNames) async {
