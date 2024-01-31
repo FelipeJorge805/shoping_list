@@ -5,7 +5,13 @@ import 'package:shoping_list/main.dart';
 class ListItem extends StatefulWidget{
   String label;
   bool checked = false;
-  ListItem({Key? key, required this.label, required this.checked}) : super(key: key);
+  final String origin;
+  ListItem({
+    super.key, 
+    required this.label, 
+    required this.checked,
+    required this.origin,
+  });
 
   @override
   State<ListItem> createState() => _ListItemState();
@@ -18,13 +24,15 @@ class ListItem extends StatefulWidget{
   factory ListItem.fromJson(Map<String, dynamic> json) {
     String label = json['label'];
     bool checked = json['checked'];
-    return ListItem(label: label, checked: checked);
+    String origin = json['origin'];
+    return ListItem(label: label, checked: checked, origin: origin);
   }
 
   toJson() {
     return {
       'label': label,
       'checked': checked,
+      'origin': origin,
     };
   }
 }
