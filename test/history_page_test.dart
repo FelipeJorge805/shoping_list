@@ -10,8 +10,8 @@ void main() {
         'name': 'Test Name',
         'date': '2022-01-01',
         'list': [
-          {'label': 'Item 1', 'checked': true},
-          {'label': 'Item 2', 'checked': false},
+          {'label': 'Item 1', 'checked': true, 'origin': 'current'},
+          {'label': 'Item 2', 'checked': false, 'origin': 'current'},
         ],
       };
 
@@ -24,8 +24,10 @@ void main() {
       expect(historyListItem.list.length, 2);
       expect(historyListItem.list[0].label, 'Item 1');
       expect(historyListItem.list[0].checked, true);
+      expect(historyListItem.list[0].origin, 'current');
       expect(historyListItem.list[1].label, 'Item 2');
       expect(historyListItem.list[1].checked, false);
+      expect(historyListItem.list[1].origin, 'current');
     });
 
     test('toJson should return a valid JSON object', () {
@@ -34,8 +36,8 @@ void main() {
         name: 'Test Name',
         date: '2022-01-01',
         list: [
-          ListItem(label: 'Item 1', checked: true),
-          ListItem(label: 'Item 2', checked: false),
+          ListItem(label: 'Item 1', checked: true, origin: 'current'),
+          ListItem(label: 'Item 2', checked: false, origin: 'current'),
         ],
       );
 
@@ -48,8 +50,10 @@ void main() {
       expect(json['list'].length, 2);
       expect(json['list'][0]['label'], 'Item 1');
       expect(json['list'][0]['checked'], true);
+      expect(json['list'][0]['origin'], 'current');
       expect(json['list'][1]['label'], 'Item 2');
       expect(json['list'][1]['checked'], false);
+      expect(json['list'][1]['origin'], 'current');
     });
   });
 }

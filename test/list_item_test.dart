@@ -8,6 +8,7 @@ void main() {
       final json = {
         'label': 'Test Label',
         'checked': true,
+        'origin': 'current',
       };
 
       // Act
@@ -16,6 +17,7 @@ void main() {
       // Assert
       expect(listItem.label, 'Test Label');
       expect(listItem.checked, true);
+      expect(listItem.origin, 'current');
     });
 
     test('toJson should return a valid JSON object', () {
@@ -23,6 +25,7 @@ void main() {
       final listItem = ListItem(
         label: 'Test Label',
         checked: true,
+        origin: 'current',
       );
 
       // Act
@@ -31,6 +34,7 @@ void main() {
       // Assert
       expect(json['label'], 'Test Label');
       expect(json['checked'], true);
+      expect(json['origin'], 'current');
     });
   });
 }
