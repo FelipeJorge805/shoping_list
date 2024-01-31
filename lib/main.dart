@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
     }
     String currentValue = await storage.readFile('current.txt');
     if(currentValue != "") {
-      appState.shoppingList = List.of(currentValue.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true")));
+      appState.shoppingList = List.of(currentValue.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true", origin: e.split("-")[2])));
     }
     //context.read<MyAppState>().allLists = jsonDecode(value);
     String historyValue = await storage.readFile('history.txt');
@@ -243,7 +243,7 @@ class MyAppState extends ChangeNotifier {
 
   void addAllSelected() {
     for (var item in selectedItems) {
-      shoppingList.add(ListItem(label: item, checked: false));
+      shoppingList.add(ListItem(label: item, checked: false, origin: "current"));
     }
     selectedItems.clear();
     setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
@@ -268,7 +268,7 @@ class MyAppState extends ChangeNotifier {
     if(overwrite) {
       clearShoppingList();
     }
-    shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false)));
+    shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false, origin: "current")));
     setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
