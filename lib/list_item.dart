@@ -60,14 +60,14 @@ class _ListItemState extends State<ListItem> {
       onChanged: (newValue) => setState(() => {
           _value = newValue,
           widget.checked = newValue!,
-          appState.changeCheckState(widget.label, newValue),
+          appState.changeCheckState(widget, newValue),
         }
       ),
       title: TextField(
         //autofocus: _focus,
         controller: textController..text = widget.label, 
         onSubmitted: (newName) => {
-          appState.updateName(widget.label, newName),
+          appState.updateName(widget, newName),
           widget.label = newName,
         },
         decoration: const InputDecoration(
