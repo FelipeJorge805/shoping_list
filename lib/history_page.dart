@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoping_list/list_item.dart';
 import 'package:shoping_list/main.dart';
 
 import 'history_list_item.dart';
@@ -15,7 +16,7 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var history = appState.allLists;
+    var history = appState.history;
 
     if (history.isEmpty) {
       return const Center(
@@ -26,7 +27,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return ListView.builder(
       itemCount: history.length,
       itemBuilder: (context, listIndex) {
-        var list = history[listIndex];
+        var list = history[listIndex].list;
         return GestureDetector(
           onLongPress: () {
             showDialog<bool>(
@@ -100,7 +101,11 @@ class _HistoryPageState extends State<HistoryPage> {
                   },
                 )
               : null,
-            child: HistoryListItem(name: appState.listNames[listIndex], date: appState.listNames[listIndex].split("|")[1], list: history[listIndex]),
+            child: HistoryListItem(
+              name: appState.listNames[listIndex], 
+              date: appState.listNames[listIndex].split("|")[1], 
+              list: List.from(history[listIndex].list.map((item) => ListItem(label: item.label, checked: item.checked, origin: 'history'))),
+            )
           ),
         );
       },
