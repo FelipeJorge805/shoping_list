@@ -176,7 +176,7 @@ class MyAppState extends ChangeNotifier {
 
   void addCurrentListToHistory(){
     if(shoppingList.isNotEmpty) {
-      history.add(HistoryListItem(name: currentlistName, date: currentDate, list: List.from(shoppingList)));
+      history.add(HistoryListItem(name: currentlistName, date: currentDate, list: List.from(shoppingList.where((element) => element.label!=""))));
       calculateCommonItems();
       listCounter++;
       //addListName(currentlistName);
