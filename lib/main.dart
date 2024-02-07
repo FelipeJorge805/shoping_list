@@ -145,10 +145,17 @@ class MyAppState extends ChangeNotifier {
   }
 
   void updateName(item, newName){
+    if(item.origin=="current") {
+      shoppingList.where((element) => element.label == item.label).first.label = newName;
+      FileStorage().saveCurrentList(shoppingList);
+    }
+    if(item.origin.contains("history")) {
+      var list = history[int.parse(item.origin.split("-")[1])].list;
+      list.where((e) => e.label == item.label).first.label = newName;
+      FileStorage().saveHistoryList(history);
+    }
     item.label = newName;
     notifyListeners();
-    if(item.origin=="current") FileStorage().saveCurrentList(shoppingList);
-    if(item.origin=="history") FileStorage().saveHistoryList(history);
   }
 
   void addItemToList(ListItem lastCreated){
@@ -189,23 +196,24 @@ class MyAppState extends ChangeNotifier {
 
   void changeCheckState(ListItem item, bool newValue) {
     item.checked = newValue;
-    if(item.origin=="current" && settings[2]) reorderOnCheck(item, newValue);
-    newValue ? checkedCounter++ : checkedCounter--; //after a potential reorderOnCheck call
+    if(item.origin=="current" && settings[2]) reorderOnCheck(shoppingList, item, newValue, checkedCounter);
+    newValue ? checkedCounter++ : checkedCounter--; //this line needs to be after a potential reorderOnCheck call(above)
     if(item.origin=="current")FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 
-  void reorderOnCheck(ListItem item, bool newValue) {
-    int length = shoppingList.length;
-    if(length == 1) return; //if only one item, don't reorder
+  void reorderOnCheck(var list, ListItem item, bool newValue, int counter) {
+    int length = list.length;
     if(newValue) {  //move to bottom
-      shoppingList.remove(item);
-      shoppingList.insert(length-1-checkedCounter,item);
+      list.removeWhere((element) => element.label == item.label);
+      list.insert(length-1-counter,item);
     }else { //move to top
-      shoppingList.remove(item);
-      shoppingList.insert(length-checkedCounter, item);
+      list.removeWhere((element) => element.label == item.label);
+      list.insert(length-counter, item);
     }
+    item.checked = newValue;
   }
+
   void toggleFavorites(var item) {
     if(favoritesList.contains(item)){
       favoritesList.remove(item);
