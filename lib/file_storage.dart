@@ -43,7 +43,7 @@ class FileStorage{
 
   Future<Map<String,bool>> readSettings() async {
     final file = await getLocalFile('settings.txt');
-    return file.readAsString().then((value) => jsonDecode(value));
+    return Map.from(jsonDecode((await file.readAsString()).toString()));
   }
 
   Future saveSettings(Map<String,bool> settings) async {
