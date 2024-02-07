@@ -60,11 +60,15 @@ class _ListItemState extends State<ListItem> {
       onChanged: (newValue) => setState(() => {
           _value = newValue,
           widget.checked = newValue!,
-          appState.changeCheckState(widget, newValue),
+          widget.label!="" ? appState.changeCheckState(widget, newValue) : null,
         }
       ),
       title: TextField(
         //autofocus: _focus,
+        /*onTapOutside: (focus) => {                        //text works but breaks checkbox above
+          appState.updateName(widget, textController.text),
+          widget.label = textController.text,
+        },*/
         controller: textController..text = widget.label, 
         onSubmitted: (newName) => {
           appState.updateName(widget, newName),
@@ -85,5 +89,49 @@ class _ListItemState extends State<ListItem> {
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return _value.toString();
+  }
+}
+
+class NewItem extends StatefulWidget {
+  final String label;
+  final String origin;
+
+  const NewItem({
+    super.key,
+    this.label = "New Item",
+    this.origin = "New Item",
+  });
+
+  @override
+  State<NewItem> createState() => _NewItemState();
+
+  factory NewItem.fromJson(Map<String, dynamic> json) {
+    String label = json['label'];
+    String origin = json['origin'];
+    return NewItem(label: label, origin: origin);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'label': label,
+      'origin': origin,
+    };
+  }
+}
+
+class _NewItemState extends State<NewItem> {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
+    return ListTile(
+      leading: IconButton(
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          appState.addItemToList(ListItem(label: "", checked: false, origin: "current"));
+        },
+      ),
+      title: Text(widget.label),
+    );
   }
 }
