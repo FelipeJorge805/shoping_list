@@ -167,6 +167,15 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void createList(){
+    if(selectedItems.isNotEmpty) {
+      addAllSelected();
+    } else{
+      addItemToList(ListItem(key: const Key('Item'),label: "", checked: false, origin: "current"));
+    }
+    checkedCounter = 0;
+  }
+
   void addItemToList(ListItem lastCreated){
     shoppingList.insert(shoppingList.length-checkedCounter,lastCreated);
     setCurrentListName("List-$listCounter","${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");

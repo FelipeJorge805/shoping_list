@@ -68,7 +68,13 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 10,),
                 FloatingActionButton(   //clear list button
                   onPressed: () => {
-                    appState.clearShoppingList(),
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => MyDialog(
+                        text: "This will delete the List without saving it.", 
+                        onOk: () => appState.clearShoppingList()
+                      ),
+                    )
                   },
                   backgroundColor: theme.colorScheme.primary,
                   child: const Icon(Icons.delete),
@@ -83,11 +89,14 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(width: 10,),
                 FloatingActionButton(   //add item button
-                  onPressed: () => {
-                    if(appState.selectedItems.isNotEmpty) appState.addAllSelected()
-                    else{
-                      appState.addItemToList(ListItem(key: const Key('Item'),label: "", checked: false, origin: "current")),
-                    }
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => MyDialog(
+                        text: "This will save the current list and create a new one.", 
+                        onOk: () => appState.createList()
+                      ),
+                    );
                   },
                   backgroundColor: theme.colorScheme.primary,
                   child: const Icon(Icons.add),
@@ -139,6 +148,37 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       }
+    );
+  }
+}
+
+class MyDialog extends StatelessWidget {
+  final TextEditingController textController = TextEditingController();
+  final String text;
+  final Function onOk;
+  
+  MyDialog({super.key, required this.text, required this.onOk});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(text),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            // Perform "OK" button functionality here
+            onOk();
+            Navigator.of(context).pop();
+          },
+          child: const Text('Ok'),
+        ),
+      ],
     );
   }
 }
