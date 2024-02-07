@@ -42,13 +42,21 @@ class _HomePageState extends State<HomePage> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        Widget title;
+        switch(selectedIndex){
+              case 0: title = Text("Current", style: style,);
+              case 1: title = Text("Favorites", style: style,);
+              case 2: title = Text("History", style: style,);
+              case 3: title = Text("Settings", style: style,);
+              default: title = Text("List", style: style,);
+        }
         return Scaffold(
           appBar: AppBar(
-            title: Text("List", style: style,),
+            title: title,
             //leading: const Icon(Icons.menu),
             backgroundColor: theme.colorScheme.primary,
             centerTitle: true,
-            toolbarHeight: constraints.maxHeight * 0.05,
+            toolbarHeight: constraints.maxHeight * 0.06,
           ),
           floatingActionButton: selectedIndex != 0 ? null : 
           Padding(
