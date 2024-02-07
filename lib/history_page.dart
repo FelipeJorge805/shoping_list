@@ -101,10 +101,11 @@ class _HistoryPageState extends State<HistoryPage> {
                   },
                 )
               : null,
-            child: HistoryListItem(
-              name: appState.listNames[listIndex], 
-              date: appState.listNames[listIndex].split("|")[1], 
-              list: List.from(history[listIndex].list.map((item) => ListItem(label: item.label, checked: item.checked, origin: 'history'))),
+            child: history[listIndex] = HistoryListItem(
+              name: history[listIndex].name, 
+              date: history[listIndex].date,
+              list: List.from(list.map((item) => ListItem(label: item.label, checked: item.checked, origin: "history-$listIndex"))),
+              expanded: history[listIndex].expanded,
             )
           ),
         );
