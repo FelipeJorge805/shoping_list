@@ -53,7 +53,12 @@ class FileStorage{
 
   Future saveCurrentList(List<ListItem> shoppingList) async {
     final file = await getLocalFile('current.txt');
-    file.writeAsString(shoppingList.map((e) => e.toString()).join("\n"));
+    file.writeAsString(jsonEncode(shoppingList.map((e) => e.toJson()).toList()));
+  }
+
+  Future<List<ListItem>> readCurrentList() async {
+    final file = await getLocalFile('current.txt');
+    return file.readAsString().then(((value) => List.of(jsonDecode(value)).map((e) => ListItem.fromJson(e as Map<String, dynamic>)).toList()));
   }
 
   Future saveHistoryList(List<HistoryListItem> history) async {

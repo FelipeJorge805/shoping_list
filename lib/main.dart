@@ -26,18 +26,18 @@ class _MyAppState extends State<MyApp> {
     if(favoritesValue != "") {
       appState.favoritesList = List.of(favoritesValue.split("\n"));
     }
-    String currentValue = await storage.readFile('current.txt');
-    if(currentValue != "") {
-      appState.shoppingList = List.of(currentValue.split("\n").map((e) => ListItem(label: e.split("-")[0], checked: e.split("-")[1] == "true", origin: e.split("-")[2])));
+    List<ListItem> currentValue = await storage.readCurrentList();
+    if(currentValue.isNotEmpty) {
+      appState.shoppingList = currentValue;
     }
     //context.read<MyAppState>().allLists = jsonDecode(value);
     List<HistoryListItem> historyValue = await storage.readHistory();
     if(historyValue.isNotEmpty) {
       appState.history = historyValue;
       appState.listCounter = appState.history.length+1;
-      appState.calculateCommonItems();
     }
-    List<String> names = await storage.readNames();
+    appState.calculateCommonItems();
+    List<String> names = [];//await storage.readNames();
     if (names.isNotEmpty) {
       appState.listNames = names;
       appState.currentlistName = appState.listNames.removeLast();
