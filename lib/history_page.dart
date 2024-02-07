@@ -80,7 +80,7 @@ class _HistoryPageState extends State<HistoryPage> {
               });
             },
             confirmDismiss:
-              appState.settings[3] ? 
+              appState.settings["moveChecked"]! ? 
                 (direction) => showDialog<bool>(
                   context: context,
                   builder: (BuildContext context) {

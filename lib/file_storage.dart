@@ -41,9 +41,14 @@ class FileStorage{
     return file.readAsLines();
   }
 
-  Future<List<bool>> readSettings() async {
+  Future<Map<String,bool>> readSettings() async {
     final file = await getLocalFile('settings.txt');
-    return file.readAsLines().then((value) => value.map((e) => e == "true").toList());
+    return file.readAsString().then((value) => jsonDecode(value));
+  }
+
+  Future saveSettings(Map<String,bool> settings) async {
+    final file = await getLocalFile('settings.txt');
+    file.writeAsString(jsonEncode(settings));
   }
 
   Future saveFavoritesList(List<String> favoritesList) async {
@@ -74,10 +79,5 @@ class FileStorage{
   Future saveNames(List<String> listNames) async {
     final file = await getLocalFile('names.txt');
     file.writeAsString(listNames.join("\n"));
-  }
-
-  Future saveSettings(List<bool> settings) async {
-    final file = await getLocalFile('settings.txt');
-    file.writeAsString(settings.map((e) => e.toString()).join("\n"));
   }
 }

@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
       appState.listNames = names;
       appState.currentlistName = appState.listNames.removeLast();
     }
-    List<bool> settings = await storage.readSettings();
+    Map<String,bool> settings = await storage.readSettings();
     if(settings.isNotEmpty) {
       appState.settings = settings;
     }
@@ -50,8 +50,8 @@ class _MyAppState extends State<MyApp> {
   
   @override
   Widget build(BuildContext context) {
-    bool system = appState.settings[0];
-    bool dark = appState.settings[1];
+    bool system = appState.settings["system"]!;
+    bool dark = appState.settings["dark"]!;
 
     return ChangeNotifierProvider(
       create: (context) => appState,
@@ -95,9 +95,14 @@ class MyAppState extends ChangeNotifier {
   int checkedCounter = 0;
   String currentlistName = "|";
   List<String> listNames = [];
-  List<bool> settings = [false, false, false, false];
+  Map<String, bool> settings = {
+    "system": false,
+    "dark": false,
+    "moveChecked": false,
+    "confirmHistoryDelete": false,
+  };
 
-  void changeSettings(int index, bool value) {
+  void changeSettings(String index, bool value) {
     settings[index] = value;
     FileStorage().saveSettings(settings);
     notifyListeners();
@@ -196,7 +201,7 @@ class MyAppState extends ChangeNotifier {
 
   void changeCheckState(ListItem item, bool newValue) {
     item.checked = newValue;
-    if(item.origin=="current" && settings[2]) reorderOnCheck(shoppingList, item, newValue, checkedCounter);
+    if(item.origin=="current" && settings["moveChecked"]!) reorderOnCheck(shoppingList, item, newValue, checkedCounter);
     newValue ? checkedCounter++ : checkedCounter--; //this line needs to be after a potential reorderOnCheck call(above)
     if(item.origin=="current")FileStorage().saveCurrentList(shoppingList);
     notifyListeners();

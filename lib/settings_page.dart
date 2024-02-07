@@ -21,11 +21,11 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Uses system settings. Override by turning off and using "dark mode".',
           child: SwitchListTile(
             title: const Text('System Theme'),
-            value: appState.settings[0],
+            value: appState.settings["system"]!,
             shape: Border.all(width: 2, color: Colors.red),
             onChanged: (bool? value) {
               setState(() {
-                appState.changeSettings(0, value!);
+                appState.changeSettings("system", value!);
               });
             },
           ),
@@ -34,10 +34,10 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Light mode is default. Dark mode if toggled on.',
           child: SwitchListTile(
             title: const Text('Dark Mode'),
-            value: appState.settings[1],
+            value: appState.settings["dark"]!,
             onChanged: (bool? value) {
               setState(() {
-                appState.changeSettings(1, value!);
+                appState.changeSettings("dark", value!);
               });
             },
           ),
@@ -46,10 +46,10 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Switch tooltip',
           child: SwitchListTile(
             title: const Text('Move Checked Items to Bottom'),
-            value: appState.settings[2],
+            value: appState.settings["moveChecked"]!,
             onChanged: (bool? value) {
               setState(() {
-                appState.changeSettings(2, value!);
+                appState.changeSettings("moveChecked", value!);
               });
             },
           ),
@@ -58,10 +58,10 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Confirmation dialog when deleting Lists from History page.',
           child: SwitchListTile(
             title: const Text('Confirm History List Deletion'),
-            value: appState.settings[3],
+            value: appState.settings["confirmHistoryDelete"]!,	
             onChanged: (bool? value) {
               setState(() {
-                appState.changeSettings(3, value!);
+                appState.changeSettings("confirmHistoryDelete", value!);
               });
             },
           ),
