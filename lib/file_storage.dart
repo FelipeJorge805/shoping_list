@@ -35,11 +35,6 @@ class FileStorage{
       return "Error";
     }
   }
-  
-  Future<List<String>> readNames() async {
-    final file = await getLocalFile('names.txt');
-    return file.readAsLines();
-  }
 
   Future<Map<String,bool>> readSettings() async {
     final file = await getLocalFile('settings.txt');
@@ -76,8 +71,23 @@ class FileStorage{
     return file.readAsString().then(((value) => List.of(jsonDecode(value)).map((e) => HistoryListItem.fromJson(e as Map<String, dynamic>)).toList()));
   }
 
-  Future saveNames(List<String> listNames) async {
+  Future saveNames(String name, String date) async {
+    final file = await getLocalFile('names.txt');
+    return file.writeAsString("$name\n$date");
+  }
+
+  Future<List<String>> readNames() async {
+    final file = await getLocalFile('names.txt');
+    return file.readAsString().then((value) => value.split("\n"));
+  }
+
+  /*Future saveNames(List<String> listNames) async {
     final file = await getLocalFile('names.txt');
     file.writeAsString(listNames.join("\n"));
   }
+
+  Future<List<String>> readNames() async {
+    final file = await getLocalFile('names.txt');
+    return file.readAsLines();
+  }*/
 }

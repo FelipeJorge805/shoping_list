@@ -76,7 +76,7 @@ class _HistoryPageState extends State<HistoryPage> {
               setState(() {
                 history.removeAt(listIndex);
                 appState.removeListFromHistory();
-                appState.removeListName(appState.listNames[listIndex]);
+                //appState.removeListName(appState.listNames[listIndex]);
               });
             },
             confirmDismiss:

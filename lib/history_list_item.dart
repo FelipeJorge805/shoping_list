@@ -66,7 +66,8 @@ class HistoryListItemState extends State<HistoryListItem> {
                 labelText: widget.name,
               ),
               onSubmitted: (value) {
-                appState.updateListName('${widget.name}|${widget.date}', value);
+                //appState.updateListName('${widget.name}|${widget.date}', value);
+                appState.updateHistoryListName(widget.name, value);
               },
             ),
           ),

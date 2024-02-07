@@ -37,10 +37,11 @@ class _MyAppState extends State<MyApp> {
       appState.listCounter = appState.history.length+1;
     }
     appState.calculateCommonItems();
-    List<String> names = [];//await storage.readNames();
+    List<String> names = await storage.readNames();
     if (names.isNotEmpty) {
-      appState.listNames = names;
-      appState.currentlistName = appState.listNames.removeLast();
+      //appState.listNames = names;
+      appState.currentlistName = names[0];
+      appState.currentDate = names.length > 1 ? names[1] : "";
     }
     Map<String,bool> settings = await storage.readSettings();
     if(settings.isNotEmpty) {
@@ -93,8 +94,9 @@ class MyAppState extends ChangeNotifier {
   Map<String,int> commonItems = {};
   int listCounter = 1;
   int checkedCounter = 0;
-  String currentlistName = "|";
-  List<String> listNames = [];
+  String currentlistName = "";
+  String currentDate = "";
+  //List<String> listNames = [];
   Map<String, bool> settings = {
     "system": false,
     "dark": false,
@@ -108,7 +110,7 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addListName(String name){
+  /*void addListName(String name){
     listNames.add(name);
     appendCurrentAndSave();
     notifyListeners();
@@ -130,16 +132,18 @@ class MyAppState extends ChangeNotifier {
     }
   }
 
-  void setCurrentListName(String name){
-    currentlistName = name;
-    appendCurrentAndSave();
-    notifyListeners();
-  }
-
   void appendCurrentAndSave() {
     List<String> updatedListNames = [...listNames, currentlistName];
     FileStorage().saveNames(updatedListNames);
-  }
+  }*/
+
+  void setCurrentListName(String name, String date){
+      currentlistName = name;
+      currentDate = date;
+      //appendCurrentAndSave();
+      FileStorage().saveNames(currentlistName, currentDate);
+      notifyListeners();
+    }
 
   void addFavoriteItem(String name){
     if(name != "" && !favoritesList.contains(name)) {
@@ -165,17 +169,17 @@ class MyAppState extends ChangeNotifier {
 
   void addItemToList(ListItem lastCreated){
     shoppingList.insert(shoppingList.length-checkedCounter,lastCreated);
-    setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+    setCurrentListName("List-$listCounter","${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
 
   void addCurrentListToHistory(){
     if(shoppingList.isNotEmpty) {
-      history.add(HistoryListItem(name: currentlistName.split("|")[0], date: currentlistName.split("|")[1], list: List.from(shoppingList)));
+      history.add(HistoryListItem(name: currentlistName, date: currentDate, list: List.from(shoppingList)));
       calculateCommonItems();
       listCounter++;
-      addListName(currentlistName);
+      //addListName(currentlistName);
       FileStorage().saveHistoryList(history);
       notifyListeners();
     }
@@ -251,7 +255,7 @@ class MyAppState extends ChangeNotifier {
       shoppingList.add(ListItem(label: item, checked: false, origin: "current"));
     }
     selectedItems.clear();
-    setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+    setCurrentListName("List-$listCounter","${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
   }
@@ -274,8 +278,17 @@ class MyAppState extends ChangeNotifier {
       clearShoppingList();
     }
     shoppingList.addAll(list.map((item) => ListItem(label: item.label, checked: false, origin: "current")));
-    setCurrentListName("List-$listCounter|${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+    setCurrentListName("List-$listCounter","${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
     FileStorage().saveCurrentList(shoppingList);
     notifyListeners();
+  }
+
+  void updateHistoryListName(String oldName, String newName){
+    int index = history.indexWhere((element) => element.name == oldName);
+    if (index != -1) {
+      history[index] = HistoryListItem(name: newName, date: history[index].date, list: history[index].list);
+      FileStorage().saveHistoryList(history);
+      notifyListeners();
+    }
   }
 }
