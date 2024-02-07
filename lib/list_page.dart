@@ -144,6 +144,7 @@ class ListPage extends StatelessWidget {
         )
       ),*/
       subtitle: ListView(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
         children: [
           for (var item in appState.shoppingList) 
             Dismissible(
@@ -154,22 +155,23 @@ class ListPage extends StatelessWidget {
                 },
                 if(direction == DismissDirection.endToStart) {  //delete item
                   appState.removeItem(item.label),
-                  }
-                },
+                }
+              },
               background: Container(
                 alignment: AlignmentDirectional.centerStart,
                 color: Colors.green,
                 child: const Icon(Icons.favorite_border),
-                ),
+              ),
               secondaryBackground: Container(
                 alignment: AlignmentDirectional.centerEnd,
                 color: Colors.red,
                 child: const Icon(Icons.cancel),
-                ),
+              ),
               movementDuration: const Duration(milliseconds: 100),
               resizeDuration: null,
               child: ListItem(label: item.label, checked: item.checked, origin: "current")
-            )
+            ),
+          const NewItem(),
         ],
       ),
     );
