@@ -74,6 +74,10 @@ class _ListItemState extends State<ListItem> {
           border: OutlineInputBorder(),
           labelText: 'Item',
         ),
+        style: TextStyle(
+          decoration: _value! ? TextDecoration.lineThrough : null,
+          color: _value! ? Colors.grey : null,
+        )
       )
     );
   }
