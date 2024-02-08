@@ -98,10 +98,12 @@ class MyAppState extends ChangeNotifier {
   String currentDate = "";
   //List<String> listNames = [];
   Map<String, bool> settings = {
-    "system": false,
+    "system": true,
     "dark": false,
-    "moveChecked": false,
-    "confirmHistoryDelete": false,
+    "moveChecked": true,
+    "confirmHistoryDeletion": true,
+    "confirmCurrentDeletion": true,
+    "confirmCurrentCreation": true,
   };
 
   void changeSettings(String index, bool value) {
