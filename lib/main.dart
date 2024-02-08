@@ -279,6 +279,7 @@ class MyAppState extends ChangeNotifier {
   void removeListFromHistory() { //currently removing the list at index from allLists via shallow copy from history_page's variable handle
     listCounter--;
     FileStorage().saveHistoryList(history);
+    calculateCommonItems();
     notifyListeners();
   }
 
