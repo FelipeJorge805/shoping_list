@@ -29,8 +29,8 @@ class ListPage extends StatelessWidget {
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(child: Align(child: Text("Favorites", style: TextStyle(fontSize: 16)))),
-              Expanded(child: Align(child: Text('Most Common', style: TextStyle(fontSize: 16),))),
+              Expanded(child: Align(child: Text("Favorites", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)))),
+              Expanded(child: Align(child: Text('Most Common', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),))),
             ],
           ),
           SizedBox(
@@ -92,12 +92,15 @@ class ListPage extends StatelessWidget {
           icon: const Icon(Icons.save),
           onPressed: () => {appState.addCurrentListToHistory(), appState.shoppingList.clear(),}
         ),*/
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
-        children: [
-          Text(appState.currentlistName),
-          Text(appState.currentDate)
-        ]
+      title: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+          children: [
+            Text(appState.currentlistName),
+            Text(appState.currentDate),
+          ]
+        ),
       ),
       /*Dismissible(
         key: UniqueKey(),
@@ -198,7 +201,11 @@ class FavoriteListItemState extends State<FavoriteListItem> {
     return Material(
       type: MaterialType.transparency,
       child: ListTile(
-        selectedTileColor: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          //side: BorderSide(color: Colors.black),
+        ),
+        selectedTileColor: Theme.of(context).colorScheme.onPrimary,
         selected: selected,
         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
         horizontalTitleGap: 10,
