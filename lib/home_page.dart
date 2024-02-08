@@ -5,7 +5,6 @@ import 'package:shoping_list/history_page.dart';
 import 'package:shoping_list/list_page.dart';
 import 'package:shoping_list/main.dart';
 import 'settings_page.dart';
-import 'list_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,14 +66,19 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 const SizedBox(width: 10,),
                 FloatingActionButton(   //clear list button
-                  onPressed: () => {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => MyDialog(
-                        text: "This will delete the List without saving it.", 
-                        onOk: () => appState.clearShoppingList()
-                      ),
-                    )
+                  onPressed: () {
+                    if(appState.settings["confirmCurrentDeletion"]!){
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => MyDialog(
+                          text: "This will delete the List without saving it.", 
+                          onOk: () => appState.clearShoppingList()
+                        ),
+                      );
+                      appState.settings["confirmCurrentDeletion"] = false;
+                    }else{
+                      appState.clearShoppingList();
+                    }
                   },
                   backgroundColor: theme.colorScheme.primary,
                   child: const Icon(Icons.delete),
@@ -90,13 +94,18 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 10,),
                 FloatingActionButton(   //add item button
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => MyDialog(
-                        text: "This will save the current list and create a new one.", 
-                        onOk: () => appState.createList()
-                      ),
-                    );
+                    if(appState.settings["confirmCurrentCreation"]!){
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => MyDialog(
+                          text: "This will save the current list and create a new one.", 
+                          onOk: () => appState.createList()
+                        ),
+                      );
+                      appState.settings["confirmCurrentCreation"] = false;
+                    } else {
+                      appState.createList();
+                    }
                   },
                   backgroundColor: theme.colorScheme.primary,
                   child: const Icon(Icons.add),
