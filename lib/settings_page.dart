@@ -58,10 +58,10 @@ class _SettingsPageState extends State<SettingsPage> {
           message: 'Confirmation dialog when deleting Lists from History page.',
           child: SwitchListTile(
             title: const Text('Confirm History List Deletion'),
-            value: appState.settings["confirmHistoryDelete"]!,	
+            value: appState.settings["confirmHistoryDeletion"]!,	
             onChanged: (bool? value) {
               setState(() {
-                appState.changeSettings("confirmHistoryDelete", value!);
+                appState.changeSettings("confirmHistoryDeletion", value!);
               });
             },
           ),
