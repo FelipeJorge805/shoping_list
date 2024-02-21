@@ -103,7 +103,6 @@ class MyAppState extends ChangeNotifier {
     "moveChecked": true,
     "confirmHistoryDeletion": true,
     "confirmCurrentDeletion": true,
-    "confirmCurrentCreation": true,
   };
 
   void changeSettings(String index, bool value) {

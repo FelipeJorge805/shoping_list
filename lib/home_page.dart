@@ -94,18 +94,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 10,),
                 FloatingActionButton(   //add item button
                   onPressed: () {
-                    if(appState.settings["confirmCurrentCreation"]!){
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => MyDialog(
-                          text: "This will save the current list and create a new one.", 
-                          onOk: () => appState.createList()
-                        ),
-                      );
-                      appState.settings["confirmCurrentCreation"] = false;
-                    } else {
-                      appState.createList();
-                    }
+                    appState.createList();
                   },
                   backgroundColor: theme.colorScheme.primary,
                   child: const Icon(Icons.add),
