@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     List<ListItem> currentValue = await storage.readCurrentList();
     if(currentValue.isNotEmpty) {
       appState.shoppingList = currentValue;
+      appState.checkedCounter = currentValue.where((element) => element.checked).length;
     }
     //context.read<MyAppState>().allLists = jsonDecode(value);
     List<HistoryListItem> historyValue = await storage.readHistory();
@@ -185,6 +186,7 @@ class MyAppState extends ChangeNotifier {
   }
 
   void addCurrentListToHistory(){
+    shoppingList.removeWhere((element) => element.label=="");
     if(shoppingList.isNotEmpty) {
       history.add(HistoryListItem(name: currentlistName, date: currentDate, list: List.from(shoppingList.where((element) => element.label!=""))));
       calculateCommonItems();
@@ -215,9 +217,11 @@ class MyAppState extends ChangeNotifier {
 
   void changeCheckState(ListItem item, bool newValue) {
     item.checked = newValue;
-    if(item.origin=="current" && settings["moveChecked"]!) reorderOnCheck(shoppingList, item, newValue, checkedCounter);
-    newValue ? checkedCounter++ : checkedCounter--; //this line needs to be after a potential reorderOnCheck call(above)
-    if(item.origin=="current")FileStorage().saveCurrentList(shoppingList);
+    if(item.origin=="current") {
+      if(settings["moveChecked"]!) reorderOnCheck(shoppingList, item, newValue, checkedCounter);
+      newValue ? checkedCounter++ : checkedCounter--; //this line needs to be after a potential reorderOnCheck call(above)
+      FileStorage().saveCurrentList(shoppingList);
+    }
     notifyListeners();
   }
 
